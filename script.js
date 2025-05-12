@@ -91,6 +91,7 @@ function restartGame() {
 // Update the score
 function updateScore() {
   score++;
+
   scoreDisplay.textContent = `გარბენი: ${score} კილომეტრი`;
 
   // Increase game speed every 1000 points
