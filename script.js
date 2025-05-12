@@ -106,7 +106,7 @@ function spawnObstacles() {
 
 // Initialize game
 function startGame() {
-  gameInterval = setInterval(moveObstacles, 1000 / 60); // 60 FPS
+  gameInterval = setInterval(moveObstacles, 2500 / 240); // 60 FPS
   scoreInterval = setInterval(updateScore, 100); // Update score every 100ms
   spawnObstacles(); // Start spawning obstacles
 }
