@@ -16,21 +16,20 @@ function jump() {
   if (isGameOver || isJumping) return;
 
   isJumping = true;
+  jumpBtn.disabled = true; // Disable the button
   player.classList.add("jumping");
 
-  // Hide the jump button for 500ms
-  jumpBtn.style.visibility = "hidden";
-  setTimeout(() => {
-    jumpBtn.style.visibility = "visible";
-  }, 1000);
-
-  // Reset jump state after jump ends
   setTimeout(() => {
     player.classList.remove("jumping");
     isJumping = false;
   }, 600);
+
+  // Re-enable button after 500ms
+  setTimeout(() => {
+    jumpBtn.disabled = false;
+  }, 600);
 }
-// Create a new obstacle
+
 // Create a new obstacle
 function createObstacle() {
   const obstacle = document.createElement("img");
@@ -77,6 +76,16 @@ function gameOver() {
   gameOverScreen.classList.remove("hidden");
   clearInterval(gameInterval); // Stop the game loop
   clearInterval(scoreInterval); // Stop the score updating
+
+  // Send the score to the backend
+  const playerName = "Player1"; // You can change this dynamically if needed
+  fetch("http://localhost:3000/scores", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: playerName, score }),
+  }).then(() => {
+    updateLeaderboard(); // Update the leaderboard after saving the score
+  });
 }
 
 // Restart the game
@@ -124,6 +133,23 @@ document.addEventListener("keydown", (e) => {
 });
 
 jumpBtn.addEventListener("click", jump);
+
+// Fetch and update leaderboard
+function updateLeaderboard() {
+  fetch("http://localhost:3000/scores/top")
+    .then((res) => res.json())
+    .then((data) => {
+      const leaderboard = document.querySelector(".uls");
+      leaderboard.innerHTML = ""; // Clear existing leaderboard
+
+      data.forEach((entry, index) => {
+        const medal = ["🥇", "🥈", "🥉"][index] || "";
+        const li = document.createElement("li");
+        li.textContent = `${medal} ${entry.name}: ${entry.score}`;
+        leaderboard.appendChild(li);
+      });
+    });
+}
 
 // Start the game when the page loads
 startGame();
