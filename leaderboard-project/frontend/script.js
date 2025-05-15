@@ -159,6 +159,10 @@ function updateLeaderboard() {
         const medal = ["🥇", "🥈", "🥉"][index] || "";
         const li = document.createElement("li");
         li.textContent = `${medal} ${entry.name}: ${entry.score}`;
+        const p = document.createElement("h2");
+        p.className === "p5";
+        p.textContent === "უმაღლესი გარბენები";
+        leaderboard.appendChild(p);
         leaderboard.appendChild(li);
       });
     });
