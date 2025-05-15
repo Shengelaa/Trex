@@ -1,22 +1,25 @@
-// backend/index.js
-const express = require("express");
-const cors = require("cors");
+import { kv } from "@vercel/kv";
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+export default async function handler(req, res) {
+  if (req.method === "POST") {
+    const { name, score } = req.body;
 
-let leaderboard = [];
+    // Get the current leaderboard or empty array
+    let leaderboard = (await kv.get("leaderboard")) || [];
 
-app.post("/api/scores", (req, res) => {
-  const { name, score } = req.body;
-  leaderboard.push({ name, score });
-  leaderboard = leaderboard.sort((a, b) => b.score - a.score).slice(0, 3);
-  res.status(200).json({ message: "Score saved", leaderboard });
-});
+    leaderboard.push({ name, score });
 
-app.get("/api/scores", (req, res) => {
-  res.status(200).json(leaderboard);
-});
+    // Keep only top 3
+    leaderboard = leaderboard.sort((a, b) => b.score - a.score).slice(0, 3);
 
-module.exports = app; // Make sure this is exporting the app
+    // Save it back
+    await kv.set("leaderboard", leaderboard);
+
+    return res.status(200).json({ message: "Score saved", leaderboard });
+  } else if (req.method === "GET") {
+    const leaderboard = (await kv.get("leaderboard")) || [];
+    return res.status(200).json(leaderboard);
+  } else {
+    return res.status(405).json({ message: "Method Not Allowed" });
+  }
+}
