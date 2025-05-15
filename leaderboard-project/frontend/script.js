@@ -102,7 +102,7 @@ function gameOver() {
   clearInterval(scoreInterval); // Stop the score updating
 
   // Send the score to the backend
-  fetch("https://trex-git-main-shengelas-projects.vercel.app/api/scores", {
+  fetch("https://trex-beryl.vercel.app/api/scores", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name: playerName, score }),
@@ -153,7 +153,7 @@ function startGame() {
 
 // Fetch and update leaderboard
 function updateLeaderboard() {
-  fetch("https://trex-git-main-shengelas-projects.vercel.app/api/scores")
+  fetch("https://trex-beryl.vercel.app/api/scores")
     .then((res) => res.json())
     .then((data) => {
       const leaderboard = document.querySelector(".uls");
