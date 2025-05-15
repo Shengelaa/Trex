@@ -31,8 +31,5 @@ app.get("/api/scores", (req, res) => {
   res.status(200).json(leaderboard); // Return the top 3 scores
 });
 
-// Start the server
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+// Export the app as a serverless function
+module.exports = app;
