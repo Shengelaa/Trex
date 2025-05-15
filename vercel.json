@@ -2,22 +2,22 @@
   "version": 2,
   "builds": [
     {
-      "src": "frontend/**",
+      "src": "leaderboard-project/frontend/**",
       "use": "@vercel/static"
     },
     {
-      "src": "backend/index.js",
+      "src": "leaderboard-project/backend/index.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/scores",
-      "dest": "/backend/index.js"
+      "dest": "leaderboard-project/backend/index.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/frontend/$1"
+      "dest": "leaderboard-project/frontend/$1"
     }
   ]
 }
