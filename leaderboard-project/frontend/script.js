@@ -37,7 +37,10 @@ function jump() {
   if (isGameOver || isJumping) return;
 
   isJumping = true;
-  jumpBtn.disabled = true; // Disable the button
+
+  // Hide the button
+  jumpBtn.style.display = "none";
+
   player.classList.add("jumping");
 
   setTimeout(() => {
@@ -45,10 +48,10 @@ function jump() {
     isJumping = false;
   }, 600);
 
-  // Re-enable button after 500ms
+  // Re-show the button after 600ms
   setTimeout(() => {
-    jumpBtn.disabled = false;
-  }, 600);
+    jumpBtn.style.display = "block"; // or 'inline-block' depending on your layout
+  }, 1000);
 }
 
 // Create a new obstacle
@@ -142,6 +145,7 @@ function spawnObstacles() {
 
 // Initialize game
 function startGame() {
+  updateLeaderboard();
   gameInterval = setInterval(moveObstacles, 1000 / 60); // 60 FPS
   scoreInterval = setInterval(updateScore, 100); // Update score every 100ms
   spawnObstacles(); // Start spawning obstacles
@@ -158,7 +162,7 @@ function updateLeaderboard() {
       data.forEach((entry, index) => {
         const medal = ["🥇", "🥈", "🥉"][index] || "";
         const li = document.createElement("li");
-        li.textContent = `${medal} ${entry.name}: ${entry.score}`;
+        li.textContent = `|  ${medal} ${entry.name}: ${entry.score} გარბენით  |`;
         leaderboard.appendChild(li);
       });
     });
