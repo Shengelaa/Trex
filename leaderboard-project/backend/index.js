@@ -1,25 +1,76 @@
-import { kv } from "@vercel/kv";
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
 
-export default async function handler(req, res) {
-  if (req.method === "POST") {
-    const { name, score } = req.body;
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-    // Get the current leaderboard or empty array
-    let leaderboard = (await kv.get("leaderboard")) || [];
+// Connect to MongoDB (without deprecated options)
+mongoose
+  .connect(
+    "mongodb+srv://admin:<levanme99>@cluster0.1pw4f.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  )
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-    leaderboard.push({ name, score });
+// Define schema and model for leaderboard scores
+const scoreSchema = new mongoose.Schema({
+  name: String,
+  score: Number,
+});
 
-    // Keep only top 3
-    leaderboard = leaderboard.sort((a, b) => b.score - a.score).slice(0, 3);
+const Score = mongoose.model("Score", scoreSchema);
 
-    // Save it back
-    await kv.set("leaderboard", leaderboard);
+// POST: Save a new score
+app.post("/api/scores", async (req, res) => {
+  const { name, score } = req.body;
 
-    return res.status(200).json({ message: "Score saved", leaderboard });
-  } else if (req.method === "GET") {
-    const leaderboard = (await kv.get("leaderboard")) || [];
-    return res.status(200).json(leaderboard);
-  } else {
-    return res.status(405).json({ message: "Method Not Allowed" });
+  console.log("Received request with name:", name, "and score:", score); // Log the incoming request data
+
+  // Basic validation check
+  if (!name || !score) {
+    return res.status(400).json({ error: "Both name and score are required" });
   }
-}
+
+  try {
+    console.log("Saving score to MongoDB...");
+    // Save new score to MongoDB
+    const newScore = new Score({ name, score });
+    await newScore.save();
+
+    console.log("Score saved successfully.");
+
+    // Get top 3 scores
+    const topScores = await Score.find().sort({ score: -1 }).limit(3);
+    console.log("Top scores:", topScores);
+
+    res.status(200).json({ message: "Score saved", leaderboard: topScores });
+  } catch (error) {
+    console.error("Error saving score:", error); // Log full error details
+    res.status(500).json({
+      error: "Failed to save score",
+      details: error.message,
+      stack: error.stack,
+    });
+  }
+});
+
+// GET: Get top 3 scores
+app.get("/api/scores", async (req, res) => {
+  try {
+    // Fetch top 3 scores from MongoDB
+    const topScores = await Score.find().sort({ score: -1 }).limit(3);
+    res.status(200).json(topScores);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch scores" });
+  }
+});
+
+// Start the server on port 3000
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Server is running on port ${PORT}`);
+});
+
+module.exports = app;
