@@ -9,7 +9,13 @@ app.use(express.json());
 // Connect to MongoDB (without deprecated options)
 mongoose
   .connect(
-    "mongodb+srv://admin:<levanme99>@cluster0.1pw4f.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    "mongodb+srv://admin:levanme99@cluster0.1pw4f.mongodb.net/LeaderBoardDB?retryWrites=true&w=majority&appName=Cluster0",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000, // 5 seconds timeout
+      socketTimeoutMS: 45000, // 45 seconds timeout
+    }
   )
   .then(() => console.log("✅ Connected to MongoDB"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
