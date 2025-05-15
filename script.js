@@ -13,17 +13,23 @@ let gameInterval, scoreInterval;
 let isJumping = false;
 
 function jump() {
-  if (isGameOver || isJumping) return; // Don't jump if already jumping or game over
+  if (isGameOver || isJumping) return;
 
   isJumping = true;
-  player.classList.add("jumping"); // Apply the jumping class to move player up
+  player.classList.add("jumping");
 
+  // Hide the jump button for 500ms
+  jumpBtn.style.visibility = "hidden";
   setTimeout(() => {
-    player.classList.remove("jumping"); // Remove jumping class after the jump
-    isJumping = false; // Allow the player to jump again after landing
-  }, 600); // Reduce this time for a quicker fall (down time)
-}
+    jumpBtn.style.visibility = "visible";
+  }, 1000);
 
+  // Reset jump state after jump ends
+  setTimeout(() => {
+    player.classList.remove("jumping");
+    isJumping = false;
+  }, 600);
+}
 // Create a new obstacle
 // Create a new obstacle
 function createObstacle() {

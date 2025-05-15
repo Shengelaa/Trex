@@ -7,13 +7,21 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <ul class="uls">
+      <li>🥇 Dachikogamer123: 4001</li>
+      <li>🥈</li>
+      <li>🥉</li>
+    </ul>
     <div class="game-container">
       <img src="yle.webp" alt="" class="player" id="player" />
-      <h4 style="color: white">🏆 DachikoGamer123: 4001 გარბენი 🏆</h4>
+
       <div id="score" class="score">გარბენი: 0</div>
       <div id="gameOver" class="game-over hidden">
-        <p>პაპმა მიგატყნა</p>
-        <button onclick="restartGame()">თამაშის თავიდან დაწყება</button>
+        <p class="p1">პაპმა მიგატყნა</p>
+        <button onclick="restartGame()" class="gameoverButton">
+          თამაშის თავიდან დაწყება
+        </button>
+        <video src="gameovergela1.mp4" autoplay loop></video>
       </div>
     </div>
     <div></div>
