@@ -3,6 +3,10 @@ const player = document.getElementById("player");
 const scoreDisplay = document.getElementById("score");
 const gameOverScreen = document.getElementById("gameOver");
 const jumpBtn = document.getElementById("jumpBtn");
+const startGameBtn = document.getElementById("startGameBtn");
+const playerNameInput = document.getElementById("playerName");
+const nameInputContainer = document.getElementById("nameInputContainer");
+const gameContainer = document.getElementById("gameContainer");
 
 // Game variables
 let score = 0;
@@ -11,6 +15,23 @@ let isGameOver = false;
 let obstacles = [];
 let gameInterval, scoreInterval;
 let isJumping = false;
+let playerName = "";
+
+// Event listener for starting the game
+startGameBtn.addEventListener("click", () => {
+  playerName = playerNameInput.value.trim(); // Get the player's name
+
+  if (playerName === "") {
+    alert("Please enter a name to start playing!"); // Ensure name is entered
+    return;
+  }
+
+  // Hide the name input and show the game container
+  nameInputContainer.style.display = "none";
+  gameContainer.style.display = "block";
+
+  startGame(); // Start the game logic
+});
 
 function jump() {
   if (isGameOver || isJumping) return;
@@ -78,8 +99,7 @@ function gameOver() {
   clearInterval(scoreInterval); // Stop the score updating
 
   // Send the score to the backend
-  const playerName = "Player1"; // You can change this dynamically if needed
-  fetch("http://localhost:3000/scores", {
+  fetch("http://localhost:3000/api/scores", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name: playerName, score }),
@@ -122,21 +142,14 @@ function spawnObstacles() {
 
 // Initialize game
 function startGame() {
-  gameInterval = setInterval(moveObstacles, 2500 / 240); // 60 FPS
+  gameInterval = setInterval(moveObstacles, 1000 / 60); // 60 FPS
   scoreInterval = setInterval(updateScore, 100); // Update score every 100ms
   spawnObstacles(); // Start spawning obstacles
 }
 
-// Event listeners for jump (mobile button and keyboard)
-document.addEventListener("keydown", (e) => {
-  if (e.code === "Space") jump();
-});
-
-jumpBtn.addEventListener("click", jump);
-
 // Fetch and update leaderboard
 function updateLeaderboard() {
-  fetch("http://localhost:3000/scores/top")
+  fetch("http://localhost:3000/api/scores")
     .then((res) => res.json())
     .then((data) => {
       const leaderboard = document.querySelector(".uls");
@@ -151,5 +164,12 @@ function updateLeaderboard() {
     });
 }
 
+// Event listeners for jump (mobile button and keyboard)
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Space") jump();
+});
+
+jumpBtn.addEventListener("click", jump);
+
 // Start the game when the page loads
-startGame();
+// (No automatic game start now as user has to enter their name)

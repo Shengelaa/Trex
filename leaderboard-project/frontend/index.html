@@ -7,14 +7,27 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <ul class="uls">
-      <li>🥇 Dachikogamer123: 4001</li>
-      <li>🥈</li>
-      <li>🥉</li>
-    </ul>
-    <div class="game-container">
-      <img src="yle.webp" alt="" class="player" id="player" />
+    <!-- Name Input Form -->
+    <div class="name-input-container" id="nameInputContainer">
+      <input
+        type="text"
+        id="playerName"
+        placeholder="ჩაწერე შენი სახელი აქ"
+        required
+      />
+      <button id="startGameBtn">დაიწყე თამაში</button>
+    </div>
 
+    <!-- Leaderboard (can be updated dynamically) -->
+
+    <!-- Game Container (Initially hidden) -->
+    <div class="game-container" id="gameContainer" style="display: none">
+      <ul class="uls">
+        <li>🥇 Dachikogamer123: 4001</li>
+        <li>🥈</li>
+        <li>🥉</li>
+      </ul>
+      <img src="yle.webp" alt="" class="player" id="player" />
       <div id="score" class="score">გარბენი: 0</div>
       <div id="gameOver" class="game-over hidden">
         <p class="p1">პაპმა მიგატყნა</p>
@@ -24,7 +37,8 @@
         <video src="gameovergela1.mp4" autoplay loop muted playsinline></video>
       </div>
     </div>
-    <div></div>
+
+    <!-- Mobile Controls -->
     <div class="mobile-controls">
       <button id="jumpBtn">ახტომა</button>
     </div>

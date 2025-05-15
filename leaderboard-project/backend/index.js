@@ -31,5 +31,11 @@ app.get("/api/scores", (req, res) => {
   res.status(200).json(leaderboard); // Return the top 3 scores
 });
 
+// Add this to make the app listen to a port locally
+const PORT = process.env.PORT || 3000; // Default to 3000 if no PORT env variable
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
+
 // Export the app as a serverless function
 module.exports = app;

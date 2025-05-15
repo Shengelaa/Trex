@@ -163,3 +163,45 @@ ul {
 li {
   margin-bottom: 20px;
 }
+
+.name-input-container {
+  display: flex;
+
+  width: fit-content;
+
+  height: 10%;
+  justify-content: center;
+  flex-direction: column;
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 200px;
+  justify-content: center;
+  align-items: center;
+}
+
+#playerName {
+  width: 200px;
+  display: flex;
+  text-align: center;
+  height: 50px;
+  margin-bottom: 20px;
+  color: black;
+  border: 0px solid white;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+#startGameBtn {
+  width: 130px;
+  display: flex;
+
+  text-align: center;
+  height: 50px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  border: 0px solid white;
+  border-radius: 20px;
+  font-size: 16px;
+}
