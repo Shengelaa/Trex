@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
-const mongoose = require("mongoose");
+const mongoose = require("mongoose"); // Only require once
 
 // Connect to MongoDB Atlas
 mongoose
@@ -11,8 +11,6 @@ mongoose
   )
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log("MongoDB connection error:", err));
-
-const mongoose = require("mongoose");
 
 const leaderboardSchema = new mongoose.Schema({
   name: { type: String, required: true },
