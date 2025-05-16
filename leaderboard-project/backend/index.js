@@ -10,7 +10,7 @@ app.use(express.json());
 let leaderboard = [];
 
 const discordWebhookUrl =
-  "https://discord.com/api/webhooks/1367789461093613580/v9mKlPyYhbmIAYHGraP7Wt4y2JwOTKFjYVIdyEshUDqmc1quVAOopeCqWUO4OCzsEkid"; // Replace with your actual Discord webhook URL
+  "https://discord.com/api/webhooks/1372735668245233664/Ac7lsar5Hy4Jde2mCpEpinRf0leQi8vrF_Pw2BEWsH1uKQE1HWKtWhGnGJNOZ2hxRL2l"; // Replace with your actual Discord webhook URL
 
 // Function to send the leaderboard to Discord
 const sendLeaderboardToDiscord = async (leaderboard) => {
