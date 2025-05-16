@@ -153,29 +153,18 @@ function startGame() {
 
 // Fetch and update leaderboard
 function updateLeaderboard() {
-  etch("https://trex-beryl.vercel.app/api/scores")
+  fetch("https://trex-beryl.vercel.app/api/scores")
     .then((res) => res.json())
     .then((data) => {
-      // Debugging the response
-      console.log("Leaderboard Data:", data);
+      const leaderboard = document.querySelector(".uls");
+      leaderboard.innerHTML = ""; // Clear existing leaderboard
 
-      // Ensure data is an array before using forEach
-      if (Array.isArray(data)) {
-        const leaderboard = document.querySelector(".uls");
-        leaderboard.innerHTML = ""; // Clear existing leaderboard
-
-        data.forEach((entry, index) => {
-          const medal = ["🥇", "🥈", "🥉"][index] || "";
-          const li = document.createElement("li");
-          li.textContent = `|  ${medal} ${entry.name}: ${entry.score} |`;
-          leaderboard.appendChild(li);
-        });
-      } else {
-        console.error("Expected an array, but got:", data);
-      }
-    })
-    .catch((error) => {
-      console.error("Error fetching leaderboard:", error);
+      data.forEach((entry, index) => {
+        const medal = ["🥇", "🥈", "🥉"][index] || "";
+        const li = document.createElement("li");
+        li.textContent = `|  ${medal} ${entry.name}: ${entry.score} გარბენით  |`;
+        leaderboard.appendChild(li);
+      });
     });
 }
 
