@@ -68,8 +68,8 @@ app.post("/api/scores", async (req, res) => {
 // GET endpoint to retrieve leaderboard
 app.get("/api/scores", async (req, res) => {
   try {
-    const leaderboard = await Leaderboard.find().sort({ score: -1 }).limit(3); // Get the top 3 scores
-    res.status(200).json(leaderboard); // Return the leaderboard as JSON
+    const leaderboard = await Leaderboard.find().sort({ score: -1 }).limit(3); // Get top 3 scores
+    res.status(200).json(leaderboard); // Send as JSON
   } catch (err) {
     console.error("Error fetching leaderboard:", err);
     res.status(500).json({ message: "Error fetching leaderboard" });
