@@ -27,19 +27,21 @@ const sendLeaderboardToDiscord = async (leaderboard) => {
   }
 };
 
+// POST endpoint to save score and send the leaderboard to Discord if it changes
 app.post("/api/scores", (req, res) => {
   const { name, score } = req.body;
   leaderboard.push({ name, score });
   leaderboard = leaderboard.sort((a, b) => b.score - a.score).slice(0, 3);
+
+  // Send the updated leaderboard to Discord only if there is a change
+  sendLeaderboardToDiscord(leaderboard);
+
   res.status(200).json({ message: "Score saved", leaderboard });
 });
 
-app.get("/api/scores", async (req, res) => {
+app.get("/api/scores", (req, res) => {
   res.status(200).json(leaderboard);
   console.log(leaderboard);
-
-  // Send the leaderboard to Discord after fetching it
-  await sendLeaderboardToDiscord(leaderboard);
 });
 
 module.exports = app;
