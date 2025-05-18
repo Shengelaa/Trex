@@ -102,7 +102,7 @@ function gameOver() {
   clearInterval(scoreInterval); // Stop the score updating
 
   // Send the score to the backend
-  fetch("https://trex-beryl.vercel.app/api/scores", {
+  fetch("https://scores1-dha8.vercel.app/api/data", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name: playerName, score }),
@@ -153,7 +153,7 @@ function startGame() {
 
 // Fetch and update leaderboard
 function updateLeaderboard() {
-  fetch("https://trex-beryl.vercel.app/api/scores")
+  fetch("https://scores1-dha8.vercel.app/api/data")
     .then((res) => res.json())
     .then((data) => {
       const leaderboard = document.querySelector(".uls");
@@ -162,16 +162,13 @@ function updateLeaderboard() {
       data.forEach((entry, index) => {
         const medal = ["🥇", "🥈", "🥉"][index] || "";
         const li = document.createElement("li");
-        li.textContent = `|  ${medal} ${entry.name}: ${entry.score} გარბენით  |`;
+        li.textContent = `|  ${medal} ${entry._id}: ${entry.score} გარბენით  |`;
         leaderboard.appendChild(li);
       });
     });
 }
 
 // Event listeners for jump (mobile button and keyboard)
-document.addEventListener("keydown", (e) => {
-  if (e.code === "Space") jump();
-});
 
 jumpBtn.addEventListener("click", jump);
 
