@@ -16,6 +16,33 @@ let obstacles = [];
 let gameInterval, scoreInterval;
 let isJumping = false;
 let playerName = "";
+// Function to detect if device is mobile
+function isMobileDevice() {
+  return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+// If the user is not on a mobile device, block the game
+if (!isMobileDevice()) {
+  // Hide name input form and game container
+  document.addEventListener("DOMContentLoaded", () => {
+    const nameInput = document.getElementById("nameInputContainer");
+    const gameContainer = document.getElementById("gameContainer");
+
+    if (nameInput) nameInput.style.display = "none";
+    if (gameContainer) gameContainer.style.display = "none";
+
+    // Create and show a message for desktop users
+    const message = document.createElement("div");
+    message.style.marginTop = "200px";
+    message.style.textAlign = "center";
+    message.innerHTML = `
+      <p style="font-size: 24px; font-weight: bold; color: black;">
+        🛑 ეს თამაში მუშაობს მხოლოდ მობილურ მოწყობილობებზე!
+      </p>
+    `;
+    document.body.appendChild(message);
+  });
+}
 
 // Event listener for starting the game
 startGameBtn.addEventListener("click", () => {

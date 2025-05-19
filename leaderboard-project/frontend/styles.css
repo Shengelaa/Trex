@@ -105,6 +105,10 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
+.video {
+  display: none;
+}
+
 .mobile-controls button:hover {
   background-color: #222;
 }
@@ -137,13 +141,13 @@ body {
     width: 60px;
     height: 80px;
   }
-}
 
-.video {
-  display: flex;
-  width: 200px;
-  border: 5px solid #ff4f91;
-  z-index: 10050;
+  .video {
+    display: flex;
+    width: 200px;
+    border: 5px solid #ff4f91;
+    z-index: 10050;
+  }
 }
 
 .gameoverButton {
