@@ -113,6 +113,10 @@ body {
   background-color: #222;
 }
 
+.hidden2 {
+  display: none;
+}
+
 /* Mobile adjustments */
 @media (min-width: 768px) {
   .game-container {
@@ -147,6 +151,10 @@ body {
     width: 200px;
     border: 5px solid #ff4f91;
     z-index: 10050;
+  }
+
+  #jumpBtn {
+    display: flex;
   }
 }
 
@@ -273,5 +281,4 @@ li {
 
 #jumpBtn {
   background-color: #ff4f91;
-
 }
