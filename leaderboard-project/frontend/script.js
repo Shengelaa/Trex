@@ -17,9 +17,9 @@ let gameInterval, scoreInterval;
 let isJumping = false;
 let playerName = "";
 // Function to detect if device is mobile
-// function isMobileDevice() {
-//   return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-// }
+function isMobileDevice() {
+  return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
 
 // If the user is not on a mobile device, block the game
 
@@ -96,7 +96,7 @@ function moveObstacles() {
       // Move the obstacle towards the left
       // Make flying obstacles faster
       if (obstacle.classList.contains("flying")) {
-        obstacleLeft -= gameSpeed * 3; // Flying obstacle is 50% faster
+        obstacleLeft -= gameSpeed * 2; // Flying obstacle is 50% faster
       } else {
         obstacleLeft -= gameSpeed; // Normal speed for ground obstacles
       }
@@ -166,15 +166,11 @@ function updateScore() {
 // Create obstacles periodically
 function spawnObstacles() {
   setInterval(() => {
-    createObstacle(); // Spawn regular obstacle immediately
-
-    // Spawn the flying obstacle 500ms before the regular one
-    setTimeout(() => {
-      if (!isGameOver) {
-        createFlyingObstacle();
-      }
-    }, 50); // Flying obstacle appears 500ms before the regular one
-  }, 1500); // Regular + flying obstacles will spawn every 2 seconds
+    if (!isGameOver) {
+      createObstacle();
+      createFlyingObstacle(); // Spawn at the same time as ground obstacle
+    }
+  }, 2000); // Spawns every 2 seconds
 }
 
 // Initialize game
