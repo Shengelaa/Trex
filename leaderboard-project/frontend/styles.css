@@ -132,18 +132,25 @@ body {
     top: 120%;
   }
   .player {
-    width: 65px;
+    width: 25px;
     height: 80px;
-    left: 3%;
+    left: 5%;
     background-color: white;
     z-index: 499;
-    border: 3px solid #ff4f91;
+
     border-radius: 5px;
     z-index: 10000;
+    background: none;
+    display: flex;
+    justify-content: flex-start;
   }
   .obstacle {
     width: 60px;
     height: 80px;
+    background: none;
+    display: flex;
+    justify-content: flex-end;
+    border: 0px;
   }
 
   .video {
@@ -155,6 +162,17 @@ body {
 
   #jumpBtn {
     display: flex;
+  }
+
+  .obstacleImg {
+    height: 80px;
+    width: auto;
+  }
+
+  .player1 {
+    width: auto;
+    height: 80px;
+    margin-left: -15px;
   }
 }
 
@@ -282,3 +300,15 @@ li {
 #jumpBtn {
   background-color: #ff4f91;
 }
+
+.flying {
+  width: 60px; /* smaller */
+  height: auto;
+  position: absolute;
+  bottom: 150px; /* already set in JS, but just in case */
+  z-index: 10;
+  background: none;
+  transform: rotate(180deg);
+}
+
+/* Add these styles to your CSS */

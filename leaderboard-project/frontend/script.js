@@ -17,9 +17,9 @@ let gameInterval, scoreInterval;
 let isJumping = false;
 let playerName = "";
 // Function to detect if device is mobile
-function isMobileDevice() {
-  return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-}
+// function isMobileDevice() {
+//   return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+// }
 
 // If the user is not on a mobile device, block the game
 
@@ -57,13 +57,26 @@ function jump() {
   // Re-show the button after 600ms
   setTimeout(() => {
     jumpBtn.style.display = "block"; // or 'inline-block' depending on your layout
-  }, 1000);
+  }, 800);
+}
+function createFlyingObstacle() {
+  const flyingObstacle = document.createElement("img");
+  flyingObstacle.src = "sword.png"; // Use your flying obstacle image
+  flyingObstacle.classList.add("obstacle", "flying");
+  flyingObstacle.style.left = `${window.innerWidth}px`;
+  flyingObstacle.style.bottom = "100px"; // Adjust height so it "flies"
+  document.querySelector(".game-container").appendChild(flyingObstacle);
+  obstacles.push(flyingObstacle);
 }
 
 // Create a new obstacle
 function createObstacle() {
-  const obstacle = document.createElement("img");
-  obstacle.src = "murati.webp"; // Correctly set the source for the image
+  const obstacle = document.createElement("div");
+  // obstacle.src = "murati.webp"; // Correctly set the source for the image
+  const obstacleImg = document.createElement("img");
+  obstacleImg.src = "murati.webp";
+  obstacleImg.classList.add("obstacleImg");
+  obstacle.appendChild(obstacleImg);
   obstacle.classList.add("obstacle");
   obstacle.style.left = `${window.innerWidth}px`; // Position the obstacle off-screen to the right
   document.querySelector(".game-container").appendChild(obstacle);
@@ -81,7 +94,13 @@ function moveObstacles() {
       obstacles.splice(index, 1); // Remove from obstacles array
     } else {
       // Move the obstacle towards the left
-      obstacleLeft -= gameSpeed;
+      // Make flying obstacles faster
+      if (obstacle.classList.contains("flying")) {
+        obstacleLeft -= gameSpeed * 3; // Flying obstacle is 50% faster
+      } else {
+        obstacleLeft -= gameSpeed; // Normal speed for ground obstacles
+      }
+
       obstacle.style.left = `${obstacleLeft}px`;
     }
 
@@ -140,13 +159,22 @@ function updateScore() {
 
   // Increase game speed every 1000 points
   if (score % 1000 === 0) {
-    gameSpeed += 1;
+    gameSpeed += 0.25;
   }
 }
 
 // Create obstacles periodically
 function spawnObstacles() {
-  setInterval(createObstacle, 2000); // New obstacle every 2 seconds
+  setInterval(() => {
+    createObstacle(); // Spawn regular obstacle immediately
+
+    // Spawn the flying obstacle 500ms before the regular one
+    setTimeout(() => {
+      if (!isGameOver) {
+        createFlyingObstacle();
+      }
+    }, 50); // Flying obstacle appears 500ms before the regular one
+  }, 1500); // Regular + flying obstacles will spawn every 2 seconds
 }
 
 // Initialize game
