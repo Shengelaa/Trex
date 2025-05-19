@@ -311,4 +311,11 @@ li {
   transform: rotate(180deg);
 }
 
+.p4 {
+  color: #ff4f91;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
 /* Add these styles to your CSS */
