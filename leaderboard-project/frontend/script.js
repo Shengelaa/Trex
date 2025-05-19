@@ -17,7 +17,7 @@ function preloadImages(imageSources, callback) {
   });
 }
 
-// Get references to DOM elements
+// Game elements
 const player = document.getElementById("player");
 const scoreDisplay = document.getElementById("score");
 const gameOverScreen = document.getElementById("gameOver");
@@ -27,7 +27,18 @@ const playerNameInput = document.getElementById("playerName");
 const nameInputContainer = document.getElementById("nameInputContainer");
 const gameContainer = document.getElementById("gameContainer");
 const deadScore = document.getElementsByClassName("p4");
+const bonusIndicator = document.getElementById("bonusIndicator");
+const first = document.createElement("img");
+first.src = "first.png";
 
+const second = document.createElement("img");
+second.src = "second.png";
+const third = document.createElement("img");
+third.src = "third.png";
+
+first.classList.add("medal");
+second.classList.add("medal");
+third.classList.add("medal");
 // Game variables
 let score = 0;
 let gameSpeed = 5;
@@ -36,6 +47,114 @@ let obstacles = [];
 let gameInterval, scoreInterval;
 let isJumping = false;
 let playerName = "";
+let isBonusActive = false;
+let bonusTimeout;
+let flyingObstacleSpeedMultiplier = 3; // Flying obstacles will be 3x faster
+
+// Create a coin obstacle
+function createCoinObstacle() {
+  const coin = document.createElement("img");
+  coin.src = "coin.png"; // Make sure the image is preloaded
+  coin.classList.add("obstacle", "coin");
+  coin.style.left = `${window.innerWidth}px`;
+  coin.style.bottom = "45px"; // Slightly above the ground
+  document.querySelector(".game-container").appendChild(coin);
+  obstacles.push(coin);
+}
+
+// Handle bonus activation (4x score for 20 seconds)
+function activateBonus() {
+  if (bonusTimeout) clearTimeout(bonusTimeout);
+
+  isBonusActive = true;
+  bonusIndicator.classList.remove("hidden"); // Show bonus indicator
+
+  bonusTimeout = setTimeout(() => {
+    isBonusActive = false;
+    bonusIndicator.classList.add("hidden"); // Hide bonus indicator after 20 seconds
+  }, 5000); // 20 seconds duration for the bonus
+}
+
+// Update score logic with bonus (4x score if bonus is active)
+function updateScore() {
+  if (isBonusActive) {
+    score += 3; // Increase score 4x if bonus is active
+  } else {
+    score++; // Normal score increment
+  }
+
+  scoreDisplay.textContent = `გარბენი: ${score} კილომეტრი`;
+
+  if (score % 1000 === 0) {
+    gameSpeed += 0.25; // Increase game speed after every 1000 points
+  }
+}
+
+// Move obstacles and check for collisions
+function moveObstacles() {
+  obstacles.forEach((obstacle, index) => {
+    let obstacleLeft = parseFloat(obstacle.style.left);
+
+    if (obstacleLeft < -50) {
+      obstacle.remove();
+      obstacles.splice(index, 1);
+    } else {
+      const speedMultiplier = obstacle.classList.contains("flying")
+        ? flyingObstacleSpeedMultiplier // Apply faster speed for flying obstacles
+        : 1; // Regular obstacles have normal speed
+
+      obstacleLeft -= gameSpeed * speedMultiplier;
+      obstacle.style.left = `${obstacleLeft}px`;
+    }
+
+    // Check for collision with player
+    const playerRect = player.getBoundingClientRect();
+    const obstacleRect = obstacle.getBoundingClientRect();
+
+    if (
+      playerRect.right > obstacleRect.left &&
+      playerRect.left < obstacleRect.right &&
+      playerRect.bottom > obstacleRect.top &&
+      playerRect.top < obstacleRect.bottom
+    ) {
+      if (obstacle.classList.contains("coin")) {
+        // Coin collected — activate bonus and don't game over
+        obstacle.remove();
+        obstacles.splice(index, 1);
+        activateBonus(); // Activating the bonus
+      } else {
+        // Hit by regular enemy obstacle — game over
+        gameOver();
+      }
+    }
+  });
+}
+
+// Spawn obstacles (with coins included)
+function spawnObstacles() {
+  let obstacleCounter = 0; // Keep track of how many obstacles have spawned
+
+  setInterval(() => {
+    if (!isGameOver) {
+      createObstacle();
+      obstacleCounter++;
+
+      // Spawn a flying obstacle after every 3 obstacles
+      if (obstacleCounter % 1 === 0) {
+        setTimeout(() => {
+          if (!isGameOver) createFlyingObstacle();
+        }, 1500); // Flying obstacle
+      }
+
+      // Spawn a coin every 4th obstacle (or adjust the condition to your preference)
+      if (obstacleCounter % 10 === 0) {
+        setTimeout(() => {
+          if (!isGameOver) createCoinObstacle();
+        }, 800); // Coin obstacle
+      }
+    }
+  }, 2000); // Obstacles spawn every 2 seconds
+}
 
 // Event listener for starting the game
 startGameBtn.addEventListener("click", () => {
@@ -49,12 +168,18 @@ startGameBtn.addEventListener("click", () => {
   nameInputContainer.style.display = "none";
   gameContainer.style.display = "block";
 
-  preloadImages(["murati.webp", "sword.png"], () => {
+  preloadImages(["murati.webp", "sword.png", "coin.png"], () => {
     startGame(); // Start the game only after images are loaded
   });
 });
 
-function jump() {
+// Jump function
+function jump(event) {
+  event.preventDefault();
+  event.stopPropagation(); // Stops the event from bubbling up
+
+  jumpBtn.blur();
+
   if (isGameOver || isJumping) return;
 
   isJumping = true;
@@ -71,6 +196,9 @@ function jump() {
   }, 800);
 }
 
+jumpBtn.addEventListener("click", jump);
+
+// Create a flying obstacle
 function createFlyingObstacle() {
   const flyingObstacle = document.createElement("img");
   flyingObstacle.src = "sword.png";
@@ -81,6 +209,7 @@ function createFlyingObstacle() {
   obstacles.push(flyingObstacle);
 }
 
+// Create regular obstacles
 function createObstacle() {
   const obstacle = document.createElement("div");
   const obstacleImg = document.createElement("img");
@@ -93,36 +222,7 @@ function createObstacle() {
   obstacles.push(obstacle);
 }
 
-function moveObstacles() {
-  obstacles.forEach((obstacle, index) => {
-    let obstacleLeft = parseFloat(obstacle.style.left);
-
-    if (obstacleLeft < -20) {
-      obstacle.remove();
-      obstacles.splice(index, 1);
-    } else {
-      if (obstacle.classList.contains("flying")) {
-        obstacleLeft -= gameSpeed * 2.5;
-      } else {
-        obstacleLeft -= gameSpeed;
-      }
-      obstacle.style.left = `${obstacleLeft}px`;
-    }
-
-    const playerRect = player.getBoundingClientRect();
-    const obstacleRect = obstacle.getBoundingClientRect();
-
-    if (
-      playerRect.right > obstacleRect.left &&
-      playerRect.left < obstacleRect.right &&
-      playerRect.bottom > obstacleRect.top &&
-      playerRect.top < obstacleRect.bottom
-    ) {
-      gameOver();
-    }
-  });
-}
-
+// Handle game over logic
 function gameOver() {
   isGameOver = true;
 
@@ -143,6 +243,7 @@ function gameOver() {
   }
 }
 
+// Restart the game
 function restartGame() {
   score = 0;
   gameSpeed = 5;
@@ -156,26 +257,6 @@ function restartGame() {
   scoreInterval = setInterval(updateScore, 100);
 }
 
-function updateScore() {
-  score++;
-  scoreDisplay.textContent = `გარბენი: ${score} კილომეტრი`;
-
-  if (score % 1000 === 0) {
-    gameSpeed += 0.25;
-  }
-}
-
-function spawnObstacles() {
-  setInterval(() => {
-    if (!isGameOver) {
-      createObstacle();
-      setTimeout(() => {
-        if (!isGameOver) createFlyingObstacle();
-      }, 300); // Flying obstacle spawns just a bit after ground one
-    }
-  }, 2000);
-}
-
 function startGame() {
   updateLeaderboard();
   gameInterval = setInterval(moveObstacles, 1000 / 60);
@@ -183,47 +264,44 @@ function startGame() {
   spawnObstacles();
 }
 
+
+// Update leaderboard function to include 1st, 2nd, and 3rd place images
+// Update leaderboard function to include 1st, 2nd, and 3rd place images
+// Update leaderboard function to include 1st, 2nd, and 3rd place images
 function updateLeaderboard() {
   fetch("https://scores1-dha8.vercel.app/api/data")
     .then((res) => res.json())
     .then((data) => {
       const leaderboard = document.querySelector(".uls");
-      leaderboard.innerHTML = "";
+      leaderboard.innerHTML = ""; // Clear existing leaderboard entries
 
       data.forEach((entry, index) => {
-        const medal = ["🥇", "🥈", "🥉"][index] || "";
+        // Determine medal image for 1st, 2nd, and 3rd place
+        let medalImage;
+        if (index === 0) {
+          medalImage = first; // Gold medal image for 1st place
+        } else if (index === 1) {
+          medalImage = second; // Silver medal image for 2nd place
+        } else if (index === 2) {
+          medalImage = third; // Bronze medal image for 3rd place
+        }
+
         const li = document.createElement("li");
-        li.textContent = `~  ${medal} ${entry._id}: ${entry.score} points ~`;
+
+        // Ensure the medal image is visible and appropriately sized
+        if (medalImage) {
+          // Optional styling for image size
+          medalImage.style.width = "30px"; // Adjust size to fit the list
+          medalImage.style.height = "auto";
+          medalImage.style.marginRight = "10px"; // Space between the image and the score
+          medalImage.style.marginLeft = "5px";
+          li.appendChild(medalImage);
+        }
+
+        // Display the player's score with the ID and score
+        li.innerHTML += `${entry._id}: ${entry.score} გარბენით `;
+     
         leaderboard.appendChild(li);
       });
     });
-}
-
-jumpBtn.addEventListener("click", jump);
-
-function isMobileDevice() {
-  return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-}
-
-if (!isMobileDevice()) {
-  document.addEventListener("DOMContentLoaded", () => {
-    const nameInput = document.getElementById("nameInputContainer");
-    const gameContainer = document.getElementById("gameContainer");
-
-    if (nameInput) nameInput.style.display = "none";
-    if (gameContainer) gameContainer.style.display = "none";
-
-    const message = document.createElement("div");
-    message.style.marginTop = "200px";
-    message.style.textAlign = "center";
-    message.innerHTML = `
-      <p style="font-size: 24px; font-weight: bold; color: black; margin-bottom: 130px;">
-        🛑 ეს თამაში მუშაობს მხოლოდ ტელეფონებზე! 🛑
-      </p>
-       <p style="font-size: 24px; font-weight: bold; color: black;">
-        🛑 This game only works on mobiles! 🛑
-      </p>
-    `;
-    document.body.appendChild(message);
-  });
 }

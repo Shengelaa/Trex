@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: #222;
+  color: #3e2f1c; /* dark brown text */
 }
 
 html,
@@ -11,7 +11,7 @@ body {
 }
 
 body {
-  background-color: #ffe5ec;
+  background-color: #f2e5d7; /* light tan */
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin-top: 190px;
 }
@@ -21,8 +21,8 @@ body {
   margin-top: 1200px;
   width: 100%;
   height: 200px;
-  background-color: #ffb3c6;
-  border-bottom: solid 4px #222;
+  background-color: #c8a97e; /* soft brown */
+  border-bottom: solid 4px #3e2f1c; /* dark brown border */
 }
 
 .player {
@@ -32,25 +32,23 @@ body {
   width: 50px;
   height: 50px;
   background-image: url("yle.webp");
-  background-color: #fff;
   border-radius: 5px;
   transition: bottom 0.3s ease-out;
 }
 
 .player.jumping {
   bottom: 150px;
-  transition: bottom 0.3s ease-out;
 }
 
 .obstacle {
   position: absolute;
-  background-color: #fff;
+  background-color: #e6d5c3;
   bottom: 0;
   right: 0;
   width: 50px;
   height: 90px;
   border-radius: 5px;
-  border: 2px solid #ff4f91;
+  border: 2px solid #8b5e3c;
 }
 
 .score {
@@ -59,26 +57,24 @@ body {
   left: 10px;
   font-size: 18px;
   font-weight: bold;
-  color: #ff4f91;
-  margin: 0 auto;
+  color: #6d4c41; /* medium brown */
 }
 
 .game-over {
   position: absolute;
   top: 80%;
   z-index: 500;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 248, 240, 0.95);
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
   padding: 20px;
-  border: 2px solid #222;
+  border: 2px solid #3e2f1c;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 90%;
   border-radius: 10px;
-  z-index: 10001;
 }
 
 .hidden {
@@ -96,7 +92,7 @@ body {
 .mobile-controls button {
   padding: 15px 30px;
   font-size: 16px;
-  background-color: #444;
+  background-color: #6d4c41;
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -105,12 +101,12 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.video {
-  display: none;
+.mobile-controls button:hover {
+  background-color: #5d4037;
 }
 
-.mobile-controls button:hover {
-  background-color: #222;
+.video {
+  display: none;
 }
 
 .hidden2 {
@@ -131,33 +127,26 @@ body {
   .score {
     top: 120%;
   }
+
   .player {
     width: 25px;
     height: 80px;
     left: 5%;
-    background-color: white;
-    z-index: 499;
 
-    border-radius: 5px;
-    z-index: 10000;
-    background: none;
     display: flex;
-    justify-content: flex-start;
   }
+
   .obstacle {
     width: 60px;
     height: 80px;
     background: none;
-    display: flex;
-    justify-content: flex-end;
-    border: 0px;
+    border: 0;
   }
 
   .video {
     display: flex;
     width: 200px;
-    border: 5px solid #ff4f91;
-    z-index: 10050;
+    border: 5px solid #8b5e3c;
   }
 
   #jumpBtn {
@@ -178,97 +167,92 @@ body {
 
 .gameoverButton {
   width: 200px;
-  margin: 0 auto;
   height: 40px;
   border: none;
-  background-color: #ff4f91;
-  font-size: 16px;
-  font-weight: 900;
-  margin-bottom: 10px;
+  background-color: #8b5e3c;
   color: white;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-weight: 900;
+  font-size: 16px;
+
+  margin: 0 auto;
+  margin-bottom: 10px;
 }
 
 .gameoverButton:hover {
-  background-color: #e5447f;
+  background-color: #6d4c41;
 }
 
 .p1 {
-  color: #111;
+  color: #3e2f1c;
   font-size: 20px;
   text-decoration: underline;
   font-weight: 700;
   margin-bottom: 20px;
 }
 
-ul {
+ol {
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: -70%;
+  top: -80%;
   z-index: 500;
-  color: yellow;
   justify-content: center;
-  width: 100%;
   align-items: center;
+  width: 100%;
 }
 
 li {
-  margin-bottom: 20px;
-  text-align: center;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #111;
-  width: fit-content;
-  list-style-type: none;
-  background-color: #ffffff;
+  background-color: #f2e5d7;
+  color: #6d4c41;
+  border-bottom: 3px solid #8b5e3c;
+
   border-radius: 5px;
-  height: 30px;
-  text-align: center;
-  max-width: 500px;
+  margin-bottom: 12px;
+  height: 40px;
   font-size: 14px;
   font-weight: 600;
-  margin-top: -10px;
-  border: 2px solid #ff4f91;
-  color: #ff4f91;
+  max-width: 500px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  list-style-type: none;
+  border-right: 3px solid #8b5e3c;
+  padding-right: 7px;
 }
 
 .name-input-container {
   display: flex;
-  width: fit-content;
-  height: 10%;
   flex-direction: column;
   width: 50%;
-  margin: 0 auto;
-  margin-top: 200px;
-  justify-content: center;
+  margin: 200px auto 0 auto;
   align-items: center;
 }
 
 #playerName {
   width: 200px;
   height: 50px;
-  margin-bottom: 20px;
-  color: #333;
-  border: 2px solid #ccc;
+  border: 2px solid #a1887f;
   border-radius: 20px;
   font-size: 16px;
   text-align: center;
   padding: 0 10px;
-  outline: none;
+  color: #3e2f1c;
+  margin-bottom: 20px;
 }
 
 #playerName:focus {
-  border-color: #ff4f91;
+  border-color: #8b5e3c;
 }
 
 #startGameBtn {
   width: 130px;
   height: 50px;
-  background-color: #ff4f91;
+  background-color: #8b5e3c;
   color: white;
   border: none;
   border-radius: 20px;
@@ -276,46 +260,114 @@ li {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 #startGameBtn:hover {
-  background-color: #ff4f91;
-}
-
-.uls {
-  color: yellow;
+  background-color: #6d4c41;
 }
 
 .p5 {
-  color: black;
+  color: #3e2f1c;
   font-size: 20px;
-  margin-bottom: 10px;
   font-weight: 900;
+  margin-bottom: 10px;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 #jumpBtn {
-  background-color: #ff4f91;
+  background-color: #8b5e3c;
+  color: white;
 }
 
 .flying {
-  width: 60px; /* smaller */
-  height: auto;
+  width: 60px;
   position: absolute;
-  bottom: 150px; /* already set in JS, but just in case */
+  bottom: 150px;
   z-index: 10;
   background: none;
   transform: rotate(180deg);
 }
 
 .p4 {
-  color: #ff4f91;
+  color: #6d4c41;
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 10px;
 }
 
-/* Add these styles to your CSS */
+#bonusIndicator {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgb(138, 67, 20); /* Glowing brown start */
+  padding: 10px 20px;
+  width: 80%;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #fff3e0;
+  box-shadow: 0 0 15px rgb(138, 67, 20);
+  animation: emptyEffect 5.2s forwards;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+#bonusIndicator.hidden {
+  display: none;
+}
+
+@keyframes emptyEffect {
+  0% {
+    background: rgb(138, 67, 20);
+    box-shadow: 0 0 15px rgb(138, 67, 20);
+    border: 3px solid rgb(138, 67, 20);
+  }
+  100% {
+    background: transparent;
+    box-shadow: none;
+    border: 3px solid transparent;
+  }
+}
+
+/* Keep coin effect untouched */
+.coin {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%; /* ensures glow matches a circular shape */
+  box-shadow: 0 0 25px 8px rgba(255, 223, 0, 0.6); /* smooth round glow */
+  filter: drop-shadow(0 0 12px rgba(255, 223, 0, 0.9));
+  animation: glowing 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glowing {
+  0% {
+    box-shadow: 0 0 15px 5px rgba(255, 223, 0, 0.4);
+    filter: drop-shadow(0 0 6px rgba(255, 223, 0, 0.5));
+  }
+  100% {
+    box-shadow: 0 0 35px 12px rgba(255, 223, 0, 0.8);
+    filter: drop-shadow(0 0 18px rgba(255, 223, 0, 1));
+  }
+}
+
+.flying {
+  background-color: none; /* soft brown */
+  width: 80px;
+  height: auto;
+}
+
+.uls img {
+  width: 5px;
+  height: 20px;
+}
+
+.medal {
+  width: 5px;
+  height: 5px;
+}
+
+.push {
+  color: white;
+}
