@@ -162,7 +162,7 @@ function updateLeaderboard() {
       data.forEach((entry, index) => {
         const medal = ["🥇", "🥈", "🥉"][index] || "";
         const li = document.createElement("li");
-        li.textContent = `|  ${medal} ${entry._id}: ${entry.score} გარბენით  |`;
+        li.textContent = `~  ${medal} ${entry._id}: ${entry.score} გარბენით  ~`;
         leaderboard.appendChild(li);
       });
     });

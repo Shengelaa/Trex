@@ -2,59 +2,55 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: white;
+  color: #222;
 }
+
 html,
 body {
   touch-action: manipulation;
 }
 
 body {
-  background-color: #f2f2f2;
-  font-family: Arial, sans-serif;
-  background-color: red;
+  background-color: #ffe5ec;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin-top: 190px;
 }
 
 .game-container {
   position: relative;
   margin-top: 1200px;
-
   width: 100%;
   height: 200px;
-  background-color: white;
-  border-bottom: solid 4px black;
-
-  background-color: red;
+  background-color: #ffb3c6;
+  border-bottom: solid 4px #222;
 }
 
 .player {
   position: absolute;
   bottom: 0;
   left: 50px;
-  width: 90px;
-  background-color: white;
-  height: 100px;
-  background-image: url("yle.webp"); /* Replace with your T-Rex image */
-
+  width: 50px;
+  height: 50px;
+  background-image: url("yle.webp");
+  background-color: #fff;
   border-radius: 5px;
-  transition: bottom 0.3s ease-out; /* Smooth jump effect */
+  transition: bottom 0.3s ease-out;
 }
 
 .player.jumping {
-  bottom: 180px; /* Increase height of jump */
-  transition: bottom 0.3s ease-out; /* Make the jump stay in the air longer */
+  bottom: 150px;
+  transition: bottom 0.3s ease-out;
 }
 
 .obstacle {
   position: absolute;
-  background-color: white;
+  background-color: #fff;
   bottom: 0;
   right: 0;
-  width: 60px;
-  height: 70px;
-
+  width: 50px;
+  height: 90px;
   border-radius: 5px;
+  border: 2px solid #ff4f91;
 }
 
 .score {
@@ -63,23 +59,26 @@ body {
   left: 10px;
   font-size: 18px;
   font-weight: bold;
+  color: #ff4f91;
+  margin: 0 auto;
 }
 
 .game-over {
   position: absolute;
   top: 80%;
   z-index: 500;
-  background-color: black;
+  background-color: rgba(255, 255, 255, 0.9);
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
-  border: 2px solid black;
+  border: 2px solid #222;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 90%;
+  border-radius: 10px;
+  z-index: 10001;
 }
 
 .hidden {
@@ -97,15 +96,20 @@ body {
 .mobile-controls button {
   padding: 15px 30px;
   font-size: 16px;
-  background-color: #333;
-  color: white;
+  background-color: #444;
+  color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: background 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-/* Smaller size for mobile devices */
+.mobile-controls button:hover {
+  background-color: #222;
+}
 
+/* Mobile adjustments */
 @media (min-width: 768px) {
   .game-container {
     display: none;
@@ -120,36 +124,49 @@ body {
     top: 120%;
   }
   .player {
-    width: 80px;
-    height: 110px;
-    left: 0%;
+    width: 65px;
+    height: 80px;
+    left: 3%;
     background-color: white;
     z-index: 499;
+    border: 3px solid #ff4f91;
+    border-radius: 5px;
+    z-index: 10000;
   }
   .obstacle {
-    width: 70px;
-    height: auto;
+    width: 60px;
+    height: 80px;
   }
 }
 
 .video {
   display: flex;
   width: 200px;
+  border: 5px solid #ff4f91;
+  z-index: 10050;
 }
 
 .gameoverButton {
   width: 200px;
   margin: 0 auto;
-  height: 30px;
-  border: 2px solid black;
-  background-color: rgb(220, 85, 237);
+  height: 40px;
+  border: none;
+  background-color: #ff4f91;
   font-size: 16px;
   font-weight: 900;
   margin-bottom: 10px;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.gameoverButton:hover {
+  background-color: #e5447f;
 }
 
 .p1 {
-  color: black;
+  color: #111;
   font-size: 20px;
   text-decoration: underline;
   font-weight: 700;
@@ -174,15 +191,25 @@ li {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #111;
+  width: fit-content;
+  list-style-type: none;
+  background-color: #ffffff;
+  border-radius: 5px;
+  height: 30px;
+  text-align: center;
+  max-width: 500px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: -10px;
+  border: 2px solid #ff4f91;
+  color: #ff4f91;
 }
 
 .name-input-container {
   display: flex;
-
   width: fit-content;
-
   height: 10%;
-  justify-content: center;
   flex-direction: column;
   width: 50%;
   margin: 0 auto;
@@ -193,49 +220,43 @@ li {
 
 #playerName {
   width: 200px;
-  display: flex;
-  text-align: center;
   height: 50px;
   margin-bottom: 20px;
-  color: black;
-  border: 0px solid white;
+  color: #333;
+  border: 2px solid #ccc;
   border-radius: 20px;
   font-size: 16px;
+  text-align: center;
+  padding: 0 10px;
+  outline: none;
+}
+
+#playerName:focus {
+  border-color: #ff4f91;
 }
 
 #startGameBtn {
   width: 130px;
-  display: flex;
-
-  text-align: center;
   height: 50px;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  color: black;
-  border: 0px solid white;
+  background-color: #ff4f91;
+  color: white;
+  border: none;
   border-radius: 20px;
   font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#startGameBtn:hover {
+  background-color: #ff4f91;
 }
 
 .uls {
   color: yellow;
-}
-
-li {
-  color: black;
-  width: fit-content;
-  list-style-type: none;
-  background-color: white;
-  border-radius: 5px;
-  height: 30px;
-  text-align: start;
-  justify-content: center;
-  max-width: 400px;
-  text-align: center;
-  justify-content: center;
-  max-width: 500px;
-  font-weight: 600;
 }
 
 .p5 {
@@ -244,4 +265,8 @@ li {
   margin-bottom: 10px;
   font-weight: 900;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+#jumpBtn {
+  background-color: #ff4f91;
 }
