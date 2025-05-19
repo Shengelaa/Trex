@@ -96,7 +96,7 @@ function moveObstacles() {
       // Move the obstacle towards the left
       // Make flying obstacles faster
       if (obstacle.classList.contains("flying")) {
-        obstacleLeft -= gameSpeed * 2; // Flying obstacle is 50% faster
+        obstacleLeft -= gameSpeed * 2.3; // Flying obstacle is 50% faster
       } else {
         obstacleLeft -= gameSpeed; // Normal speed for ground obstacles
       }
