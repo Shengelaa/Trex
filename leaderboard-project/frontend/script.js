@@ -1,5 +1,56 @@
 const imageCache = {};
 
+(function () {
+  function isMobileDevice() {
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const isMobileUA =
+      /android|iphone|ipad|ipod|iemobile|blackberry|bada|mobile/i.test(ua);
+    const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    const isSmallScreen = window.innerWidth <= 768;
+
+    return isMobileUA && isTouch && isSmallScreen;
+  }
+
+  function blockGame() {
+    document.documentElement.innerHTML = "";
+
+    const warning = document.createElement("div");
+    warning.style.position = "fixed";
+    warning.style.top = "0";
+    warning.style.left = "0";
+    warning.style.width = "100vw";
+    warning.style.height = "100vh";
+    warning.style.backgroundColor = "white";
+    warning.style.display = "flex";
+    warning.style.justifyContent = "center";
+    warning.style.alignItems = "center";
+    warning.style.flexDirection = "column";
+    warning.style.zIndex = "9999";
+
+    const text = document.createElement("p");
+    text.innerText = "🛑 ეს თამაში მხოლოდ მუშაობს მობილურზე  🛑";
+    text.style.fontSize = "24px";
+    text.style.fontWeight = "bold";
+    text.style.color = "black";
+    text.style.textAlign = "center";
+
+    warning.appendChild(text);
+    document.body.appendChild(warning);
+  }
+
+  // Run the check immediately
+  if (!isMobileDevice()) {
+    blockGame();
+  }
+
+  // Also re-check on resize (in case user tries to cheat)
+  window.addEventListener("resize", () => {
+    if (!isMobileDevice()) {
+      blockGame();
+    }
+  });
+})();
+
 function preloadImages(imageSources, callback) {
   let loadedCount = 0;
   const total = imageSources.length;
