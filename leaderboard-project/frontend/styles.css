@@ -371,3 +371,71 @@ li {
 .push {
   color: white;
 }
+.skin-selection {
+  margin-top: 10px;
+  text-align: center;
+}
+.p7 {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  width: 500px;
+
+  margin: 0 auto;
+  width: fit-content;
+  color: #6d4c41;
+  height: 50px;
+}
+
+.skins {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+.skin-option {
+  width: 80px;
+  height: 80px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.skin-option:hover {
+  transform: scale(1.2);
+}
+
+.skin-option1 {
+  margin-right: 15px;
+}
+
+.skin-option.selected {
+  border: 2px solid #6d4c41;
+  border-radius: 5px;
+}
+
+.menu {
+  width: 120px;
+
+  font-size: 7px;
+  font-weight: 700;
+  border: 0px solid;
+  border-radius: 8px;
+  margin-top: 20px;
+  margin-bottom: 19px;
+  height: 20px;
+
+  background-color: #ccb19c;
+  color: white;
+  border-bottom: 4px solid #8d7b65;
+  border-right: 4px solid #8d7b65;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.loti {
+  width: 200px;
+}

@@ -50,6 +50,37 @@ let playerName = "";
 let isBonusActive = false;
 let bonusTimeout;
 let flyingObstacleSpeedMultiplier = 3; // Flying obstacles will be 3x faster
+let selectedSkin = "yle.webp"; // Default skin
+
+// Handle skin selection
+// Handle skin selection
+// Handle skin selection
+document.querySelectorAll(".skin-option").forEach((img) => {
+  img.addEventListener("click", () => {
+    document
+      .querySelectorAll(".skin-option")
+      .forEach((i) => i.classList.remove("selected"));
+    img.classList.add("selected");
+    selectedSkin = img.getAttribute("data-skin"); // Save selected skin
+
+    // Update player's image src and width
+    const playerImg = player.querySelector("img"); // Get the player image element
+    playerImg.src = selectedSkin; // Update the image source
+
+    // Check if the player's image is "loti.png", and adjust the width accordingly
+    if (selectedSkin === "loti.png") {
+      player.style.width = "fit-content";
+      player.style.height = "fit-content";
+
+      playerImg.style.width = "100%";
+      playerImg.style.height = "80px";
+      playerImg.style.width = "60px";
+      playerImg.style.marginLeft = "16px";
+    } else {
+      playerImg.style.width = ""; // Reset width to default (optional)
+    }
+  });
+});
 
 // Create a coin obstacle
 function createCoinObstacle() {
@@ -165,10 +196,14 @@ startGameBtn.addEventListener("click", () => {
     return;
   }
 
+  // Set the player's selected skin
+  const playerImg = player.querySelector("img");
+  playerImg.src = selectedSkin;
+
   nameInputContainer.style.display = "none";
   gameContainer.style.display = "block";
 
-  preloadImages(["murati.webp", "sword.png", "coin.png"], () => {
+  preloadImages(["murati.webp", "sword.png", "coin.png", selectedSkin], () => {
     startGame(); // Start the game only after images are loaded
   });
 });
@@ -201,12 +236,24 @@ jumpBtn.addEventListener("click", jump);
 // Create a flying obstacle
 function createFlyingObstacle() {
   const flyingObstacle = document.createElement("img");
-  flyingObstacle.src = "sword.png";
+
+  // 🔄 Use yanwi.png if player skin is loti.png
+  if (selectedSkin === "loti.png") {
+    flyingObstacle.src = "yanwi.png";
+    flyingObstacle.style.height = "30px"; // Optional: make it smaller
+  } else {
+    flyingObstacle.src = "sword.png";
+  }
+
   flyingObstacle.classList.add("obstacle", "flying");
   flyingObstacle.style.left = `${window.innerWidth}px`;
   flyingObstacle.style.bottom = "100px";
   document.querySelector(".game-container").appendChild(flyingObstacle);
   obstacles.push(flyingObstacle);
+}
+
+function refreshPage() {
+  location.reload(); // This reloads the current page
 }
 
 // Create regular obstacles
@@ -257,13 +304,37 @@ function restartGame() {
   scoreInterval = setInterval(updateScore, 100);
 }
 
+// Start the game
 function startGame() {
   updateLeaderboard();
+
+  // Change obstacles based on selected skin
+  if (selectedSkin === "loti.png") {
+    changeObstacleImage("gvino.png"); // Use gvino.png as obstacle image
+  } else {
+    changeObstacleImage("murati.webp"); // Default obstacle image
+  }
+
   gameInterval = setInterval(moveObstacles, 1000 / 60);
   scoreInterval = setInterval(updateScore, 100);
   spawnObstacles();
 }
 
+// Function to change the obstacle image dynamically
+function changeObstacleImage(imageSrc) {
+  // Update the createObstacle function to use the new image
+  createObstacle = function () {
+    const obstacle = document.createElement("div");
+    const obstacleImg = document.createElement("img");
+    obstacleImg.src = imageSrc; // Use the image passed to the function
+    obstacleImg.classList.add("obstacleImg");
+    obstacle.appendChild(obstacleImg);
+    obstacle.classList.add("obstacle");
+    obstacle.style.left = `${window.innerWidth}px`;
+    document.querySelector(".game-container").appendChild(obstacle);
+    obstacles.push(obstacle);
+  };
+}
 
 // Update leaderboard function to include 1st, 2nd, and 3rd place images
 // Update leaderboard function to include 1st, 2nd, and 3rd place images
@@ -300,7 +371,7 @@ function updateLeaderboard() {
 
         // Display the player's score with the ID and score
         li.innerHTML += `${entry._id}: ${entry.score} გარბენით `;
-     
+
         leaderboard.appendChild(li);
       });
     });

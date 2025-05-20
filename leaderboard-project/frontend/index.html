@@ -24,6 +24,25 @@
         placeholder="ჩაწერე შენი სახელი აქ"
         required
       />
+
+      <!-- Character (Skin) Selection -->
+      <div class="skin-selector">
+        <p class="p7">აირჩიე მორბენალი:</p>
+        <div class="skins">
+          <img
+            src="yle.webp"
+            data-skin="yle.webp"
+            class="skin-option selected skin-option1"
+          />
+          <img
+            src="loti.png"
+            data-skin="loti.png"
+            class="skin-option skin-option1"
+          />
+          <img src="ira.webp" data-skin="ira.webp" class="skin-option" />
+        </div>
+      </div>
+
       <button id="startGameBtn">დაიწყე თამაში</button>
     </div>
 
@@ -43,12 +62,15 @@
       <div id="score" class="score">გარბენი: 0</div>
       <div id="bonusIndicator" class="hidden">3X გარბენი გაგიაქტიურდა!</div>
       <div id="gameOver" class="game-over hidden">
-        <p class="p1">პაპმა მიგატყნა</p>
+        <p class="p1">მოკვდი!</p>
         <p class="p4">შენ გაირბინე 0 კილომეტრი</p>
         <button onclick="restartGame()" class="gameoverButton">
           თამაშის თავიდან დაწყება
         </button>
         <video src="gameovergela1.mp4" autoplay loop muted playsinline></video>
+        <button onclick="refreshPage()" class="menu">
+          მთავარ გვერდზე დაბრუნება
+        </button>
       </div>
     </div>
 
