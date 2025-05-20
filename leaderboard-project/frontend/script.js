@@ -12,44 +12,27 @@ const imageCache = {};
   }
 
   function blockGame() {
-    document.documentElement.innerHTML = "";
-
-    const warning = document.createElement("div");
-    warning.style.position = "fixed";
-    warning.style.top = "0";
-    warning.style.left = "0";
-    warning.style.width = "100vw";
-    warning.style.height = "100vh";
-    warning.style.backgroundColor = "white";
-    warning.style.display = "flex";
-    warning.style.justifyContent = "center";
-    warning.style.alignItems = "center";
-    warning.style.flexDirection = "column";
-    warning.style.zIndex = "9999";
-
-    const text = document.createElement("p");
-    text.innerText = "🛑 ეს თამაში მხოლოდ მუშაობს მობილურზე  🛑";
-    text.style.fontSize = "24px";
-    text.style.fontWeight = "bold";
-    text.style.color = "black";
-    text.style.textAlign = "center";
-
-    warning.appendChild(text);
-    document.body.appendChild(warning);
+    window.location.href = "about:blank";
   }
 
-  // Run the check immediately
   if (!isMobileDevice()) {
     blockGame();
   }
 
-  // Also re-check on resize (in case user tries to cheat)
   window.addEventListener("resize", () => {
     if (!isMobileDevice()) {
       blockGame();
     }
   });
 })();
+function isRealMobileDevice() {
+  const hasTouchScreen =
+    "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const isSmallScreen = window.innerWidth <= 768;
+  const isMobileUA = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+
+  return hasTouchScreen && isSmallScreen && isMobileUA;
+}
 
 function preloadImages(imageSources, callback) {
   let loadedCount = 0;
@@ -120,13 +103,17 @@ document.querySelectorAll(".skin-option").forEach((img) => {
 
     // Check if the player's image is "loti.png", and adjust the width accordingly
     if (selectedSkin === "loti.png") {
-      player.style.width = "fit-content";
-      player.style.height = "fit-content";
+      const width = "60px";
+      const height = "80px";
 
-      playerImg.style.width = "100%";
-      playerImg.style.height = "80px";
-      playerImg.style.width = "60px";
-      playerImg.style.marginLeft = "16px";
+      playerImg.style.width = width;
+      playerImg.style.height = height;
+      playerImg.style.marginLeft = "5px";
+      player.style.width = "45px";
+      player.style.height = height;
+
+      // If you want to center it instead:
+      // player.style.margin = "0 auto";
     } else {
       playerImg.style.width = ""; // Reset width to default (optional)
     }
