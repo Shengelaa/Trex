@@ -241,7 +241,7 @@ startGameBtn.addEventListener("click", () => {
   nameInputContainer.style.display = "none";
   gameContainer.style.display = "block";
 
-  preloadImages(["murati.webp", "sword.png", "coin.png", selectedSkin], () => {
+  preloadImages(["murati.webp", "sword.png", "coin.png", "ira.webp", "loti.png", "yanwi.png", "gvino.png", selectedSkin], () => {
     startGame(); // Start the game only after images are loaded
   });
 });
