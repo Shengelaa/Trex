@@ -63,6 +63,15 @@ const gameContainer = document.getElementById("gameContainer");
 const deadScore = document.getElementsByClassName("p4");
 const bonusIndicator = document.getElementById("bonusIndicator");
 const first = document.createElement("img");
+const bulletsLeftDisplay = document.getElementById("bulletsLeft");
+
+let gunCollected = false;
+let bullets = 0;
+let obstacleSpawnCount = 0;
+const gunBtn = document.getElementById("gunBtn"); // Add button in HTML
+const gunImg = document.createElement("img"); // Image to show player is holding gun
+gunImg.src = "gun.png";
+gunImg.classList.add("player-gun");
 first.src = "first.png";
 
 const second = document.createElement("img");
@@ -191,38 +200,64 @@ function moveObstacles() {
         obstacle.remove();
         obstacles.splice(index, 1);
         activateBonus(); // Activating the bonus
+      } else if (obstacle.classList.contains("gun")) {
+        // Gun collected
+        gunCollected = true;
+        bullets = 3;
+        gunBtn.classList.remove("hidden"); // Show gun button
+        bulletsLeftDisplay.classList.remove("hiddennn");
+        obstacle.remove();
+        obstacles.splice(index, 1);
+        bulletsLeftDisplay.textContent = "ტყვიები: 3";
       } else {
-        // Hit by regular enemy obstacle — game over
         gameOver();
       }
     }
   });
 }
+function spawnGunPickup() {
+  const gun = document.createElement("img");
+  gun.src = "gun.png";
+  gun.classList.add("obstacle", "gun");
+  gun.style.left = `${window.innerWidth}px`;
+  gun.style.bottom = "25px";
+  gun.style.width = "40px";
+  gun.style.height = "auto";
+  gun.style.borderRadius = "0px";
+  gun.classList.add("gavisrole");
+
+  document.querySelector(".game-container").appendChild(gun);
+
+  obstacles.push(gun);
+}
 
 // Spawn obstacles (with coins included)
 function spawnObstacles() {
-  let obstacleCounter = 0; // Keep track of how many obstacles have spawned
-
   setInterval(() => {
     if (!isGameOver) {
       createObstacle();
-      obstacleCounter++;
+      obstacleSpawnCount++;
 
-      // Spawn a flying obstacle after every 3 obstacles
-      if (obstacleCounter % 1 === 0) {
+      if (obstacleSpawnCount % 40 === 0) {
+        setTimeout(() => {
+          if (!isGameOver) spawnGunPickup();
+        }, 1000);
+        // Gun appears every 40 obstacles
+      }
+
+      if (obstacleSpawnCount % 1 === 0) {
         setTimeout(() => {
           if (!isGameOver) createFlyingObstacle();
-        }, 1500); // Flying obstacle
+        }, 1500);
       }
 
-      // Spawn a coin every 4th obstacle (or adjust the condition to your preference)
-      if (obstacleCounter % 10 === 0) {
+      if (obstacleSpawnCount % 10 === 0) {
         setTimeout(() => {
           if (!isGameOver) createCoinObstacle();
-        }, 800); // Coin obstacle
+        }, 800);
       }
     }
-  }, 2000); // Obstacles spawn every 2 seconds
+  }, 2000);
 }
 
 // Event listener for starting the game
@@ -322,6 +357,9 @@ function createObstacle() {
 // Handle game over logic
 function gameOver() {
   isGameOver = true;
+  gunCollected = false;
+  bullets = 0;
+  gunBtn.classList.add("hidden"); // Hide gun button
 
   gameOverScreen.classList.remove("hidden");
   clearInterval(gameInterval);
@@ -342,6 +380,10 @@ function gameOver() {
 
 // Restart the game
 function restartGame() {
+  gunCollected = false;
+  bullets = 0;
+  gunBtn.classList.add("hidden");
+
   score = 0;
   gameSpeed = 5;
   isGameOver = false;
@@ -349,7 +391,7 @@ function restartGame() {
   obstacles = [];
   scoreDisplay.textContent = "გარბენი: 0";
   gameOverScreen.classList.add("hidden");
-
+  bulletsLeftDisplay.classList.add("hiddennn");
   gameInterval = setInterval(moveObstacles, 1000 / 60);
   scoreInterval = setInterval(updateScore, 100);
 }
@@ -426,3 +468,69 @@ function updateLeaderboard() {
       });
     });
 }
+gunBtn.addEventListener("click", () => {
+  if (!gunCollected || bullets <= 0 || isGameOver) return;
+
+  bullets--;
+
+  // Update bullets left display right after shooting
+
+  if (bullets === 2) {
+    bulletsLeftDisplay.textContent = `ტყვიები: 2`;
+    bulletsLeftDisplay.classList.remove("hiddennn");
+  } else if (bullets === 1) {
+    bulletsLeftDisplay.textContent = `ტყვიები: 1`;
+    bulletsLeftDisplay.classList.remove("hiddennn");
+  } else if (bullets === 3) {
+    bulletsLeftDisplay.textContent = `ტყვიები: 3`;
+    bulletsLeftDisplay.classList.remove("hiddennn");
+  } else {
+    bulletsLeftDisplay.classList.add("hiddennn");
+  }
+
+  // Create a bullet
+  const bullet = document.createElement("div");
+  bullet.classList.add("bullet");
+  bullet.style.left = `${player.offsetLeft + 40}px`;
+  bullet.style.bottom = "60px";
+  document.querySelector(".game-container").appendChild(bullet);
+
+  // Move bullet
+  const interval = setInterval(() => {
+    let left = parseFloat(bullet.style.left);
+    if (left > window.innerWidth) {
+      bullet.remove();
+      clearInterval(interval);
+      return;
+    }
+
+    bullet.style.left = `${left + 15}px`;
+
+    // Collision with ground obstacles only
+    obstacles.forEach((obstacle, index) => {
+      if (
+        !obstacle.classList.contains("flying") &&
+        obstacle.getBoundingClientRect().left <
+          bullet.getBoundingClientRect().right &&
+        obstacle.getBoundingClientRect().right >
+          bullet.getBoundingClientRect().left &&
+        obstacle.getBoundingClientRect().bottom >
+          bullet.getBoundingClientRect().top &&
+        obstacle.getBoundingClientRect().top <
+          bullet.getBoundingClientRect().bottom
+      ) {
+        obstacle.remove();
+        obstacles.splice(index, 1);
+
+        bullet.remove();
+        clearInterval(interval);
+      }
+    });
+  }, 20);
+
+  // Hide gun button and reset gunCollected if no bullets left
+  if (bullets <= 0) {
+    gunBtn.classList.add("hidden");
+    gunCollected = false; // optional
+  }
+});

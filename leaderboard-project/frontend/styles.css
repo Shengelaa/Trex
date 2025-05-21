@@ -342,17 +342,6 @@ li {
   animation: glowing 1.5s ease-in-out infinite alternate;
 }
 
-@keyframes glowing {
-  0% {
-    box-shadow: 0 0 15px 5px rgba(255, 223, 0, 0.4);
-    filter: drop-shadow(0 0 6px rgba(255, 223, 0, 0.5));
-  }
-  100% {
-    box-shadow: 0 0 35px 12px rgba(255, 223, 0, 0.8);
-    filter: drop-shadow(0 0 18px rgba(255, 223, 0, 1));
-  }
-}
-
 .flying {
   background-color: none; /* soft brown */
   width: 80px;
@@ -443,4 +432,95 @@ li {
 
 .obstacle {
   border-radius: 180%;
+}
+
+#gunBtn {
+  position: absolute;
+  bottom: 100px;
+  right: 20px;
+  z-index: 999;
+  padding: 10px 20px;
+  background: #333;
+  color: white;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+.player-gun {
+  position: absolute;
+  bottom: 10px;
+  right: 5px;
+  width: 20px;
+  height: auto;
+}
+.bullet {
+  position: absolute;
+  width: 8px;
+  height: 5px;
+  top: 78%;
+  background-color: black;
+  z-index: 999;
+  border-radius: 50%;
+}
+
+.player-gun {
+  position: absolute;
+  width: 40px; /* adjust size as needed */
+  height: auto;
+  pointer-events: none;
+  z-index: 10;
+  transition: opacity 0.3s ease;
+  opacity: 0; /* hidden initially */
+}
+
+.player-gun.visible {
+  opacity: 1;
+}
+
+.gavisrole {
+  margin-bottom: 20px;
+}
+
+.gunBtn {
+  /* Initially visible */
+  display: block;
+
+  /* Animate opacity from 1 to 0 after 5 seconds */
+  animation: disappearAfter5s 1s forwards;
+  animation-delay: 5s; /* Wait 5 seconds before starting the fade */
+}
+
+.hiddennn {
+  display: none;
+}
+
+.rr22 {
+  color: rgb(70, 22, 22);
+  font-weight: 700;
+  font-size: 17px;
+  margin: 0 auto;
+
+  margin-left: 10px;
+}
+
+#gunBtn {
+  width: 90px;
+  height: 50px;
+  font-size: 16px;
+  background-color: rgb(93, 27, 27);
+  font-weight: 700;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  border: 0px solid;
+  border-bottom: 4px solid rgb(35, 11, 11);
+  border-right: 4px solid rgb(35, 11, 11);
+  margin: 0 auto;
+  left: -55%;
+  top: 88.3%;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
 }
