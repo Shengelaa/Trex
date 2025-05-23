@@ -365,7 +365,7 @@ function gameOver() {
   clearInterval(gameInterval);
   clearInterval(scoreInterval);
 
-  fetch("https://scores1-dha8.vercel.app/api/data", {
+  fetch("https://scores2.vercel.app/api/data", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name: playerName, score }),
@@ -432,7 +432,7 @@ function changeObstacleImage(imageSrc) {
 // Update leaderboard function to include 1st, 2nd, and 3rd place images
 // Update leaderboard function to include 1st, 2nd, and 3rd place images
 function updateLeaderboard() {
-  fetch("https://scores1-dha8.vercel.app/api/data")
+  fetch("https://scores2.vercel.app/api/data")
     .then((res) => res.json())
     .then((data) => {
       const leaderboard = document.querySelector(".uls");
