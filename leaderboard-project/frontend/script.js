@@ -603,7 +603,7 @@ gunBtn.addEventListener("click", () => {
         clearInterval(interval);
       }
     });
-    ShootingSound();
+
   }, 20);
 
   // Hide gun button and reset gunCollected if no bullets left
