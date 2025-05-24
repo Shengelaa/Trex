@@ -383,7 +383,6 @@ function jump(event) {
   setTimeout(() => {
     jumpBtn.style.display = "block";
     btn.style.opacity = "1";
-
   }, 800);
 }
 
@@ -547,7 +546,7 @@ function updateLeaderboard() {
 }
 gunBtn.addEventListener("click", () => {
   if (!gunCollected || bullets <= 0 || isGameOver) return;
-  ShootingSound();
+
   bullets--;
 
   // Update bullets left display right after shooting
@@ -604,6 +603,7 @@ gunBtn.addEventListener("click", () => {
         clearInterval(interval);
       }
     });
+    ShootingSound();
   }, 20);
 
   // Hide gun button and reset gunCollected if no bullets left
