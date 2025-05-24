@@ -59,6 +59,9 @@ body {
   font-weight: bold;
   color: #6d4c41; /* medium brown */
 }
+#pauseButton {
+  display: none;
+}
 
 .game-over {
   position: absolute;
@@ -79,6 +82,37 @@ body {
 
 .hidden {
   display: none;
+}
+#pauseButton {
+  background: linear-gradient(145deg, #8b5e3c, #5c3a1a);
+  color: #f3e9dc;
+  border: none;
+  padding: 12px 25px;
+  font-size: 12px;
+  font-weight: 600;
+  width: 140px;
+  border-radius: 0px;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+  align-items: center;
+  height: 40px;
+  justify-content: center;
+  text-align: center;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 15px;
+  text-align: center;
+}
+
+#pauseButton:hover {
+  background: linear-gradient(145deg, #a97c50, #7b4e23);
+}
+
+#pauseButton:active {
+  background: linear-gradient(145deg, #5c3a1a, #8b5e3c);
+
+  transform: translateY(2px);
 }
 
 .mobile-controls {
@@ -213,8 +247,8 @@ li {
 
   border-radius: 5px;
   margin-bottom: 12px;
-  height: 40px;
-  font-size: 14px;
+  height: 30px;
+  font-size: 13px;
   font-weight: 600;
   max-width: 500px;
   text-align: center;
@@ -351,6 +385,7 @@ li {
 .uls img {
   width: 5px;
   height: 20px;
+  margin: 0px 4px;
 }
 
 .medal {

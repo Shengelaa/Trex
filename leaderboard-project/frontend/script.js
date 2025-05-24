@@ -94,6 +94,36 @@ let isBonusActive = false;
 let bonusTimeout;
 let flyingObstacleSpeedMultiplier = 3; // Flying obstacles will be 3x faster
 let selectedSkin = "yle.webp"; // Default skin
+let paused = false;
+let obstacleSpawnerInterval;
+
+document.getElementById("pauseButton").addEventListener("click", () => {
+  paused = !paused;
+
+  if (paused) {
+    clearInterval(gameInterval);
+    clearInterval(scoreInterval);
+    clearInterval(obstacleSpawnerInterval); // Stop spawning obstacles on pause
+    document.getElementById("pauseButton").textContent = "▶  გაგრძელება";
+  } else {
+    gameInterval = setInterval(moveObstacles, 1000 / 60);
+    scoreInterval = setInterval(updateScore, 100);
+    spawnObstacles(); // Restart spawning obstacles after unpausing
+    document.getElementById("pauseButton").textContent = "⏸  პაუზა";
+  }
+});
+
+pauseButton.onclick = function () {
+  // Hide the button immediately
+  pauseButton.style.display = "none";
+
+  // Show it again after 1 second (1000 milliseconds)
+  setTimeout(() => {
+    pauseButton.style.display = "inline-block"; // or "block" depending on your layout
+  }, 2500);
+
+  // Your existing pause logic here...
+};
 
 // Handle skin selection
 // Handle skin selection
@@ -155,6 +185,8 @@ function activateBonus() {
 
 // Update score logic with bonus (4x score if bonus is active)
 function updateScore() {
+  if (paused || isGameOver) return; // Don't increase score if paused or game over
+
   if (isBonusActive) {
     score += 3; // Increase score 4x if bonus is active
   } else {
@@ -162,6 +194,7 @@ function updateScore() {
   }
 
   scoreDisplay.textContent = `გარბენი: ${score} კილომეტრი`;
+  scoreDisplay.style.marginTop = "20px";
 
   if (score % 1000 === 0) {
     gameSpeed += 0.25; // Increase game speed after every 1000 points
@@ -170,6 +203,8 @@ function updateScore() {
 
 // Move obstacles and check for collisions
 function moveObstacles() {
+  if (paused || isGameOver) return;
+
   obstacles.forEach((obstacle, index) => {
     let obstacleLeft = parseFloat(obstacle.style.left);
 
@@ -233,27 +268,27 @@ function spawnGunPickup() {
 
 // Spawn obstacles (with coins included)
 function spawnObstacles() {
-  setInterval(() => {
-    if (!isGameOver) {
+  obstacleSpawnerInterval = setInterval(() => {
+    if (!isGameOver && !paused) {
+      // <-- Also check for paused here
       createObstacle();
       obstacleSpawnCount++;
 
       if (obstacleSpawnCount % 40 === 0) {
         setTimeout(() => {
-          if (!isGameOver) spawnGunPickup();
+          if (!isGameOver && !paused) spawnGunPickup();
         }, 1000);
-        // Gun appears every 40 obstacles
       }
 
       if (obstacleSpawnCount % 1 === 0) {
         setTimeout(() => {
-          if (!isGameOver) createFlyingObstacle();
+          if (!isGameOver && !paused) createFlyingObstacle();
         }, 1500);
       }
 
       if (obstacleSpawnCount % 10 === 0) {
         setTimeout(() => {
-          if (!isGameOver) createCoinObstacle();
+          if (!isGameOver && !paused) createCoinObstacle();
         }, 800);
       }
     }
@@ -298,9 +333,9 @@ function jump(event) {
   event.preventDefault();
   event.stopPropagation(); // Stops the event from bubbling up
 
-  jumpBtn.blur();
+  if (paused || isGameOver || isJumping) return; // Prevent jump if paused
 
-  if (isGameOver || isJumping) return;
+  jumpBtn.blur();
 
   isJumping = true;
   jumpBtn.style.display = "none";
@@ -358,13 +393,14 @@ function createObstacle() {
 function gameOver() {
   isGameOver = true;
   gunCollected = false;
+  paused = false; // <-- Reset paused on game over
   bullets = 0;
   gunBtn.classList.add("hidden"); // Hide gun button
 
   gameOverScreen.classList.remove("hidden");
   clearInterval(gameInterval);
   clearInterval(scoreInterval);
-
+  clearInterval(obstacleSpawnerInterval); // Also clear spawner on game over
   fetch("https://scores2.vercel.app/api/data", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -383,7 +419,7 @@ function restartGame() {
   gunCollected = false;
   bullets = 0;
   gunBtn.classList.add("hidden");
-
+  paused = false; // <-- Reset paused when restarting
   score = 0;
   gameSpeed = 5;
   isGameOver = false;
@@ -394,6 +430,8 @@ function restartGame() {
   bulletsLeftDisplay.classList.add("hiddennn");
   gameInterval = setInterval(moveObstacles, 1000 / 60);
   scoreInterval = setInterval(updateScore, 100);
+  spawnObstacles();
+  document.getElementById("pauseButton").textContent = "⏸ პაუზა";
 }
 
 // Start the game
@@ -406,6 +444,7 @@ function startGame() {
   } else {
     changeObstacleImage("murati.webp"); // Default obstacle image
   }
+  document.getElementById("pauseButton").style.display = "inline-block"; // or "block"
 
   gameInterval = setInterval(moveObstacles, 1000 / 60);
   scoreInterval = setInterval(updateScore, 100);
