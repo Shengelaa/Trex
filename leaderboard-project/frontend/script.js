@@ -344,84 +344,21 @@ startGameBtn.addEventListener("click", () => {
   nameInputContainer.style.display = "none";
   gameContainer.style.display = "block";
 
-  function preloadImages(images, callback) {
-    let loadedCount = 0;
-    if (images.length === 0) {
-      callback();
-      return;
+  preloadImages(
+    [
+      "murati.webp",
+      "sword.png",
+      "coin.png",
+      "ira.webp",
+      "loti.png",
+      "yanwi.png",
+      "gvino.png",
+      selectedSkin,
+    ],
+    () => {
+      startGame(); // Start the game only after images are loaded
     }
-
-    images.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = img.onerror = () => {
-        loadedCount++;
-        if (loadedCount === images.length) callback();
-      };
-    });
-  }
-
-  function preloadAudios(audios, callback) {
-    let loadedCount = 0;
-    if (audios.length === 0) {
-      callback();
-      return;
-    }
-
-    audios.forEach((src) => {
-      const audio = new Audio();
-      audio.src = src;
-      audio.addEventListener(
-        "canplaythrough",
-        () => {
-          loadedCount++;
-          if (loadedCount === audios.length) callback();
-        },
-        { once: true }
-      );
-      audio.onerror = () => {
-        loadedCount++;
-        if (loadedCount === audios.length) callback();
-      };
-    });
-  }
-
-  function preloadAssets(images, audios, callback) {
-    let imagesLoaded = false;
-    let audiosLoaded = false;
-
-    preloadImages(images, () => {
-      imagesLoaded = true;
-      if (audiosLoaded) callback();
-    });
-
-    preloadAudios(audios, () => {
-      audiosLoaded = true;
-      if (imagesLoaded) callback();
-    });
-  }
-
-  const imagesToPreload = [
-    "murati.webp",
-    "sword.png",
-    "coin.png",
-    "ira.webp",
-    "loti.png",
-    "yanwi.png",
-    "gvino.png",
-    selectedSkin,
-  ];
-  const audiosToPreload = [
-    "sounds/jumping3.wav",
-    "sounds/deathsoudn.wav",
-    "sounds/laught.wav",
-    "sounds/coin.wav",
-    "sounds/shooting.wav",
-  ];
-
-  preloadAssets(imagesToPreload, audiosToPreload, () => {
-    startGame(); // Start game after all assets loaded
-  });
+  );
 });
 
 // Jump function
@@ -446,6 +383,7 @@ function jump(event) {
   setTimeout(() => {
     jumpBtn.style.display = "block";
     btn.style.opacity = "1";
+
   }, 800);
 }
 
