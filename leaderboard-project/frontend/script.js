@@ -370,7 +370,7 @@ function jump(event) {
   const btn = document.getElementById("pauseButton");
   btn.style.opacity = "0.3";
   jumpBtn.blur();
-  playJumpSound();
+
   isJumping = true;
   jumpBtn.style.display = "none";
   player.classList.add("jumping");
@@ -383,7 +383,6 @@ function jump(event) {
   setTimeout(() => {
     jumpBtn.style.display = "block";
     btn.style.opacity = "1";
-    btn.style.display = "block";
   }, 800);
 }
 
