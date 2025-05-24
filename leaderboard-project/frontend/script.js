@@ -74,31 +74,6 @@ gunImg.src = "gun.png";
 gunImg.classList.add("player-gun");
 first.src = "first.png";
 const jumpSounds = new Audio("sounds/jumping3.wav");
-function preloadAssets(imageSources, audioSources, callback) {
-  let loadedCount = 0;
-  const total = imageSources.length + audioSources.length;
-
-  function checkAllLoaded() {
-    loadedCount++;
-    if (loadedCount === total && typeof callback === "function") {
-      callback();
-    }
-  }
-
-  imageSources.forEach((src) => {
-    const img = new Image();
-    img.src = src;
-    img.onload = checkAllLoaded;
-    img.onerror = checkAllLoaded; // avoid blocking on error
-  });
-
-  audioSources.forEach((src) => {
-    const audio = new Audio();
-    audio.src = src;
-    audio.oncanplaythrough = checkAllLoaded;
-    audio.onerror = checkAllLoaded;
-  });
-}
 
 const deathSound = new Audio("sounds/deathsoudn.wav");
 
@@ -362,46 +337,28 @@ startGameBtn.addEventListener("click", () => {
     return;
   }
 
-  // Show preloader
-  const preloader = document.getElementById("preloader");
-  preloader.style.display = "flex";
+  // Set the player's selected skin
+  const playerImg = player.querySelector("img");
+  playerImg.src = selectedSkin;
 
-  // Assets to preload
-  const imagesToPreload = [
-    "murati.webp",
-    "sword.png",
-    "coin.png",
-    "ira.webp",
-    "loti.png",
-    "yanwi.png",
-    "gvino.png",
-    selectedSkin,
-    "gun.png",
-    "first.png",
-    "second.png",
-    "third.png",
-  ];
+  nameInputContainer.style.display = "none";
+  gameContainer.style.display = "block";
 
-  const audiosToPreload = [
-    "sounds/jumping3.wav",
-    "sounds/deathsoudn.wav",
-    "sounds/laught.wav",
-    "sounds/coin.wav",
-    "sounds/shooting.wav",
-  ];
-
-  preloadAssets(imagesToPreload, audiosToPreload, () => {
-    preloader.style.display = "none"; // Hide preloader after loading
-
-    // Set the player's selected skin
-    const playerImg = player.querySelector("img");
-    playerImg.src = selectedSkin;
-
-    nameInputContainer.style.display = "none";
-    gameContainer.style.display = "block";
-
-    startGame(); // Start the game only after assets are loaded
-  });
+  preloadImages(
+    [
+      "murati.webp",
+      "sword.png",
+      "coin.png",
+      "ira.webp",
+      "loti.png",
+      "yanwi.png",
+      "gvino.png",
+      selectedSkin,
+    ],
+    () => {
+      startGame(); // Start the game only after images are loaded
+    }
+  );
 });
 
 // Jump function
@@ -415,8 +372,8 @@ function jump(event) {
   jumpBtn.blur();
   isJumping = true;
   jumpBtn.style.display = "none";
+
   player.classList.add("jumping");
-  playJumpSound();
 
   setTimeout(() => {
     player.classList.remove("jumping");
