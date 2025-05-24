@@ -1,38 +1,38 @@
 const imageCache = {};
 
-(function () {
-  function isMobileDevice() {
-    const ua = navigator.userAgent || navigator.vendor || window.opera;
-    const isMobileUA =
-      /android|iphone|ipad|ipod|iemobile|blackberry|bada|mobile/i.test(ua);
-    const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    const isSmallScreen = window.innerWidth <= 768;
+// (function () {
+//   function isMobileDevice() {
+//     const ua = navigator.userAgent || navigator.vendor || window.opera;
+//     const isMobileUA =
+//       /android|iphone|ipad|ipod|iemobile|blackberry|bada|mobile/i.test(ua);
+//     const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+//     const isSmallScreen = window.innerWidth <= 768;
 
-    return isMobileUA && isTouch && isSmallScreen;
-  }
+//     return isMobileUA && isTouch && isSmallScreen;
+//   }
 
-  function blockGame() {
-    window.location.href = "about:blank";
-  }
+//   function blockGame() {
+//     window.location.href = "about:blank";
+//   }
 
-  if (!isMobileDevice()) {
-    blockGame();
-  }
+//   if (!isMobileDevice()) {
+//     blockGame();
+//   }
 
-  window.addEventListener("resize", () => {
-    if (!isMobileDevice()) {
-      blockGame();
-    }
-  });
-})();
-function isRealMobileDevice() {
-  const hasTouchScreen =
-    "ontouchstart" in window || navigator.maxTouchPoints > 0;
-  const isSmallScreen = window.innerWidth <= 768;
-  const isMobileUA = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+//   window.addEventListener("resize", () => {
+//     if (!isMobileDevice()) {
+//       blockGame();
+//     }
+//   });
+// })();
+// function isRealMobileDevice() {
+//   const hasTouchScreen =
+//     "ontouchstart" in window || navigator.maxTouchPoints > 0;
+//   const isSmallScreen = window.innerWidth <= 768;
+//   const isMobileUA = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
 
-  return hasTouchScreen && isSmallScreen && isMobileUA;
-}
+//   return hasTouchScreen && isSmallScreen && isMobileUA;
+// }
 
 function preloadImages(imageSources, callback) {
   let loadedCount = 0;
@@ -73,6 +73,43 @@ const gunImg = document.createElement("img"); // Image to show player is holding
 gunImg.src = "gun.png";
 gunImg.classList.add("player-gun");
 first.src = "first.png";
+const jumpSounds = [
+  new Audio("sounds/jumping2.wav"),
+  new Audio("sounds/jumping3.wav"),
+  new Audio("sounds/jumping4.wav"),
+];
+const deathSound = new Audio("sounds/deathsoudn.wav");
+
+function deathSoundFun() {
+  deathSound.currentTime = 0;
+  deathSound.play();
+}
+const laughtSound = new Audio("sounds/laught.wav");
+
+function laughtFunction() {
+  laughtSound.currentTime = 0;
+  laughtSound.play();
+}
+
+const coinPickUpSound = new Audio("sounds/coin.wav");
+
+function coinPlaySound() {
+  coinPickUpSound.currentTime = 0;
+  coinPickUpSound.play();
+}
+
+const shootSound = new Audio("sounds/shooting.wav");
+
+function ShootingSound() {
+  shootSound.currentTime = 0;
+  shootSound.play();
+}
+
+function playJumpSound() {
+  const index = Math.floor(Math.random() * jumpSounds.length);
+  jumpSounds[index].currentTime = 0; // restart sound if it's still playing
+  jumpSounds[index].play();
+}
 
 const second = document.createElement("img");
 second.src = "second.png";
@@ -176,7 +213,7 @@ function activateBonus() {
 
   isBonusActive = true;
   bonusIndicator.classList.remove("hidden"); // Show bonus indicator
-
+  coinPlaySound();
   bonusTimeout = setTimeout(() => {
     isBonusActive = false;
     bonusIndicator.classList.add("hidden"); // Hide bonus indicator after 20 seconds
@@ -334,9 +371,10 @@ function jump(event) {
   event.stopPropagation(); // Stops the event from bubbling up
 
   if (paused || isGameOver || isJumping) return; // Prevent jump if paused
-
+  const btn = document.getElementById("pauseButton");
+  btn.style.display = "none";
   jumpBtn.blur();
-
+  playJumpSound();
   isJumping = true;
   jumpBtn.style.display = "none";
   player.classList.add("jumping");
@@ -348,6 +386,7 @@ function jump(event) {
 
   setTimeout(() => {
     jumpBtn.style.display = "block";
+    btn.style.display = "block";
   }, 800);
 }
 
@@ -396,8 +435,10 @@ function gameOver() {
   paused = false; // <-- Reset paused on game over
   bullets = 0;
   gunBtn.classList.add("hidden"); // Hide gun button
+  deathSoundFun();
 
   gameOverScreen.classList.remove("hidden");
+
   clearInterval(gameInterval);
   clearInterval(scoreInterval);
   clearInterval(obstacleSpawnerInterval); // Also clear spawner on game over
@@ -509,7 +550,7 @@ function updateLeaderboard() {
 }
 gunBtn.addEventListener("click", () => {
   if (!gunCollected || bullets <= 0 || isGameOver) return;
-
+  ShootingSound();
   bullets--;
 
   // Update bullets left display right after shooting
@@ -540,6 +581,7 @@ gunBtn.addEventListener("click", () => {
     if (left > window.innerWidth) {
       bullet.remove();
       clearInterval(interval);
+      score + 150;
       return;
     }
 

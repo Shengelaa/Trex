@@ -145,6 +145,7 @@ body {
 
 .hidden2 {
   display: none;
+  margin-top: 50px;
 }
 
 /* Mobile adjustments */
@@ -232,7 +233,7 @@ ol {
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: -80%;
+  top: -90%;
   z-index: 500;
   justify-content: center;
   align-items: center;
@@ -246,9 +247,9 @@ li {
   border-bottom: 3px solid #8b5e3c;
 
   border-radius: 5px;
-  margin-bottom: 12px;
-  height: 30px;
-  font-size: 13px;
+  margin-bottom: 16px;
+  height: 40px;
+  font-size: 16px;
   font-weight: 600;
   max-width: 500px;
   text-align: center;
@@ -558,4 +559,13 @@ li {
   align-content: center;
   justify-items: center;
   text-align: center;
+}
+
+.hidden2 {
+  top: 20px;
+}
+
+.rr22 {
+  margin-top: -35px;
+  margin-left: 150px;
 }
