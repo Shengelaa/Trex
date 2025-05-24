@@ -73,11 +73,11 @@ const gunImg = document.createElement("img"); // Image to show player is holding
 gunImg.src = "gun.png";
 gunImg.classList.add("player-gun");
 first.src = "first.png";
-const jumpSounds = [
-  new Audio("sounds/jumping2.wav"),
+const jumpSounds = 
+
   new Audio("sounds/jumping3.wav"),
-  new Audio("sounds/jumping4.wav"),
-];
+
+
 const deathSound = new Audio("sounds/deathsoudn.wav");
 
 function deathSoundFun() {
@@ -106,9 +106,8 @@ function ShootingSound() {
 }
 
 function playJumpSound() {
-  const index = Math.floor(Math.random() * jumpSounds.length);
-  jumpSounds[index].currentTime = 0; // restart sound if it's still playing
-  jumpSounds[index].play();
+  jumpSounds.currentTime = 0
+  jumpSounds.play()
 }
 
 const second = document.createElement("img");
