@@ -468,7 +468,7 @@ function restartGame() {
   gameInterval = setInterval(moveObstacles, 1000 / 60);
   scoreInterval = setInterval(updateScore, 100);
   spawnObstacles();
-  document.getElementById("pauseButton").textContent = "⏸ პაუზა";
+  document.getElementById("pauseButton").textContent = "❚❚ პაუზა";
 }
 
 // Start the game
