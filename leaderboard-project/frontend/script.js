@@ -1,38 +1,38 @@
 const imageCache = {};
 
-// (function () {
-//   function isMobileDevice() {
-//     const ua = navigator.userAgent || navigator.vendor || window.opera;
-//     const isMobileUA =
-//       /android|iphone|ipad|ipod|iemobile|blackberry|bada|mobile/i.test(ua);
-//     const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-//     const isSmallScreen = window.innerWidth <= 768;
+(function () {
+  function isMobileDevice() {
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const isMobileUA =
+      /android|iphone|ipad|ipod|iemobile|blackberry|bada|mobile/i.test(ua);
+    const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    const isSmallScreen = window.innerWidth <= 768;
 
-//     return isMobileUA && isTouch && isSmallScreen;
-//   }
+    return isMobileUA && isTouch && isSmallScreen;
+  }
 
-//   function blockGame() {
-//     window.location.href = "about:blank";
-//   }
+  function blockGame() {
+    window.location.href = "about:blank";
+  }
 
-//   if (!isMobileDevice()) {
-//     blockGame();
-//   }
+  if (!isMobileDevice()) {
+    blockGame();
+  }
 
-//   window.addEventListener("resize", () => {
-//     if (!isMobileDevice()) {
-//       blockGame();
-//     }
-//   });
-// })();
-// function isRealMobileDevice() {
-//   const hasTouchScreen =
-//     "ontouchstart" in window || navigator.maxTouchPoints > 0;
-//   const isSmallScreen = window.innerWidth <= 768;
-//   const isMobileUA = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+  window.addEventListener("resize", () => {
+    if (!isMobileDevice()) {
+      blockGame();
+    }
+  });
+})();
+function isRealMobileDevice() {
+  const hasTouchScreen =
+    "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const isSmallScreen = window.innerWidth <= 768;
+  const isMobileUA = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
 
-//   return hasTouchScreen && isSmallScreen && isMobileUA;
-// }
+  return hasTouchScreen && isSmallScreen && isMobileUA;
+}
 
 function preloadImages(imageSources, callback) {
   let loadedCount = 0;
@@ -146,7 +146,7 @@ document.getElementById("pauseButton").addEventListener("click", () => {
     gameInterval = setInterval(moveObstacles, 1000 / 60);
     scoreInterval = setInterval(updateScore, 100);
     spawnObstacles(); // Restart spawning obstacles after unpausing
-    document.getElementById("pauseButton").textContent = "⏸  პაუზა";
+    document.getElementById("pauseButton").textContent = "❚❚ პაუზა";
   }
 });
 
